@@ -4,7 +4,7 @@
 export type Video = {
   id: string;
   title: string;
-  description: string;
+  description?: string;
   youtubeId: string; // for inline embed
   publishedAt: string;
 };
@@ -47,29 +47,29 @@ export const syntheses: Video[] = [
   {
     id: "chainlink-quadrillions",
     title: "Quadrillions",
-    description: "Chainlink at the protocol level — the oracle stack that quietly runs most of DeFi. What the numbers actually mean.",
-    youtubeId: "dQw4w9WgXcQ", // Tim to replace
+    description: "",
+    youtubeId: "dQw4w9WgXcQ", // PENDING: Tim to supply real YouTube ID
     publishedAt: "2025-08-12",
   },
   {
     id: "fileverse-anti-docs",
     title: "Anti-Google Docs",
-    description: "Fileverse as the document layer crypto actually needs — not another storage pitch, a real productivity tool.",
-    youtubeId: "dQw4w9WgXcQ",
+    description: "",
+    youtubeId: "dQw4w9WgXcQ", // PENDING
     publishedAt: "2025-09-04",
   },
   {
     id: "keycard-shell-gameboy",
     title: "Gameboy or Wallet?",
-    description: "Keycard Shell review — the hardware wallet that doesn't look like one. Three weeks of testing.",
-    youtubeId: "dQw4w9WgXcQ",
+    description: "",
+    youtubeId: "dQw4w9WgXcQ", // PENDING
     publishedAt: "2026-04-18",
   },
   {
     id: "zora-paid-me",
     title: "Guess Which Paid Me?",
-    description: "Zora coin mechanics, creator earnings, and the experiment I ran for 90 days. The result surprised me.",
-    youtubeId: "dQw4w9WgXcQ",
+    description: "",
+    youtubeId: "dQw4w9WgXcQ", // PENDING
     publishedAt: "2025-11-22",
   },
 ];

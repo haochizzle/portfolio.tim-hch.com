@@ -1,23 +1,14 @@
 ---
 import { conversations } from "../data/content.ts";
 import ScrollCue from "./ScrollCue.astro";
-
-// Speech-bubble placeholder text — abstract babble, not real words
-const babble = [
-  "yeah so basically", "the thing is", "no but listen", "right right right",
-  "I mean technically", "from what I've seen", "and this is the part", "they don't tell you",
-  "but actually", "ok so here's the deal", "wait wait wait", "the real insight is",
-];
 ---
 
 <section class="conversations" id="conversations">
   <canvas class="babble-canvas" id="babble-canvas" aria-hidden="true"></canvas>
+  <div class="strike-line" id="strike-line" aria-hidden="true"></div>
 
   <div class="stage">
-    <div class="title-wrap" data-title>
-      <h2 class="arc-title serif">Conversations</h2>
-      <div class="strike"></div>
-    </div>
+    <h2 class="arc-title serif" aria-label="Conversations">Conversations</h2>
 
     <div class="carousel" data-carousel>
       <button class="nav prev" aria-label="Previous">←</button>
@@ -50,8 +41,8 @@ const babble = [
 <style>
   .conversations {
     position: relative;
-    min-height: 100vh;
-    min-height: 100svh;
+    height: 100vh;
+    height: 100svh;
     background: var(--cream);
     overflow: hidden;
   }
@@ -62,55 +53,60 @@ const babble = [
     width: 100%;
     height: 100%;
     pointer-events: none;
-    opacity: 0;
-    transition: opacity 700ms var(--ease);
+    transition: opacity 900ms var(--ease);
   }
-  .conversations.in .babble-canvas { opacity: 0.7; }
+
+  /* The line — sits centered vertically, starts off-screen left,
+     sweeps right, scythes through the speech bubbles. */
+  .strike-line {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--accent);
+    box-shadow: 0 0 16px var(--accent-glow), 0 0 32px var(--accent-glow);
+    transform: translateY(-50%) scaleX(0);
+    transform-origin: left center;
+    z-index: 2;
+    pointer-events: none;
+  }
+  .conversations.strike .strike-line {
+    animation: strike-sweep 700ms var(--ease) forwards;
+  }
+  @keyframes strike-sweep {
+    0%   { transform: translateY(-50%) scaleX(0); }
+    100% { transform: translateY(-50%) scaleX(1); }
+  }
 
   .stage {
     position: relative;
-    z-index: 2;
+    z-index: 3;
     max-width: 900px;
     margin: 0 auto;
-    padding: 120px 24px 96px;
+    padding: 100px 24px 80px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 64px;
+    gap: 56px;
+    height: 100%;
+    justify-content: center;
   }
 
-  .title-wrap {
-    position: relative;
-    text-align: center;
-  }
+  /* Title — opacity 0 until the strike clears the babble */
   .arc-title {
     font-size: clamp(3rem, 9vw, 6rem);
     font-weight: 400;
     letter-spacing: -0.02em;
     opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 800ms var(--ease) 600ms, transform 800ms var(--ease) 600ms;
+    transform: translateY(8px);
+    transition: opacity 600ms var(--ease) 700ms, transform 600ms var(--ease) 700ms;
   }
-  .conversations.in .arc-title {
+  .conversations.reveal .arc-title {
     opacity: 1;
     transform: translateY(0);
   }
 
-  .strike {
-    position: absolute;
-    top: 50%;
-    left: -10%;
-    right: -10%;
-    height: 2px;
-    background: var(--accent);
-    transform: scaleX(0);
-    transform-origin: left center;
-    box-shadow: 0 0 16px var(--accent-glow);
-    transition: transform 1100ms var(--ease) 300ms;
-  }
-  .conversations.in .strike { transform: scaleX(1); }
-
-  /* Carousel */
   .carousel {
     position: relative;
     width: 100%;
@@ -131,13 +127,13 @@ const babble = [
     flex: 0 0 100%;
     scroll-snap-align: center;
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateY(20px);
     transition: opacity 700ms var(--ease), transform 700ms var(--ease);
   }
-  .conversations.in .conv-card {
+  .conversations.reveal .conv-card {
     opacity: 1;
     transform: translateY(0);
-    transition-delay: calc(900ms + var(--i) * 110ms);
+    transition-delay: calc(900ms + var(--i) * 100ms);
   }
 
   .embed {
@@ -149,10 +145,7 @@ const babble = [
   }
   .embed iframe { width: 100%; height: 100%; border: 0; }
 
-  .meta {
-    margin-top: 20px;
-    text-align: center;
-  }
+  .meta { margin-top: 20px; text-align: center; }
   .guest {
     display: inline-block;
     font-size: 0.7rem;
@@ -161,17 +154,8 @@ const babble = [
     color: var(--accent);
     margin-bottom: 8px;
   }
-  .meta h3 {
-    font-size: 1.6rem;
-    font-weight: 500;
-    margin-bottom: 6px;
-  }
-  .meta p {
-    color: var(--ink-mute);
-    font-size: 0.95rem;
-    max-width: 560px;
-    margin: 0 auto;
-  }
+  .meta h3 { font-size: 1.6rem; font-weight: 500; margin-bottom: 6px; }
+  .meta p { color: var(--ink-mute); font-size: 0.95rem; max-width: 560px; margin: 0 auto; }
 
   .nav {
     position: absolute;
@@ -186,14 +170,9 @@ const babble = [
     z-index: 3;
     transition: border-color 250ms var(--ease), background 250ms var(--ease);
   }
-  .nav:hover {
-    border-color: var(--accent);
-    background: var(--accent);
-    color: var(--cream);
-  }
+  .nav:hover { border-color: var(--accent); background: var(--accent); color: var(--cream); }
   .nav.prev { left: -56px; }
   .nav.next { right: -56px; }
-
   @media (max-width: 980px) {
     .nav.prev { left: 4px; }
     .nav.next { right: 4px; }
@@ -203,12 +182,14 @@ const babble = [
 <script>
   const section = document.getElementById("conversations");
   const canvas = document.getElementById("babble-canvas") as HTMLCanvasElement | null;
+  const line = document.getElementById("strike-line");
+  let triggered = false;
+  let cleanup: (() => void) | undefined;
 
-  // Speech-bubble babble renderer — abstract, not real words
+  // Speech-bubble babble — denser, more overlapping than before.
   function setupBabble(c: HTMLCanvasElement) {
     const ctx = c.getContext("2d");
     if (!ctx) return;
-
     const dpr = window.devicePixelRatio || 1;
     const resize = () => {
       c.width = c.clientWidth * dpr;
@@ -217,91 +198,105 @@ const babble = [
     resize();
     window.addEventListener("resize", resize);
 
-    type Bubble = { x: number; y: number; r: number; text: string; alpha: number; vx: number; vy: number; };
+    type Bubble = { x: number; y: number; vx: number; vy: number; text: string; alpha: number; size: number; };
     const bubbles: Bubble[] = [];
     const phrases = [
-      "yeah", "right", "ok but", "wait", "the thing is", "no listen",
-      "basically", "exactly", "I mean", "and then", "so actually", "right right",
-      "you know", "for sure", "totally", "the real", "what I mean",
+      "yeah so basically", "the thing is", "no but listen", "right right right",
+      "I mean technically", "from what I've seen", "this is the part", "they don't tell you",
+      "but actually", "ok so here's the deal", "wait wait wait", "the real insight is",
+      "for sure", "totally", "exactly", "you know what I mean", "and then",
+      "so wait", "I think", "look", "honestly",
     ];
-
-    const spawn = () => {
+    const fill = () => {
       const w = c.clientWidth;
       const h = c.clientHeight;
-      bubbles.push({
-        x: Math.random() * w,
-        y: h + 40,
-        r: 30 + Math.random() * 50,
-        text: phrases[Math.floor(Math.random() * phrases.length)],
-        alpha: 0.4 + Math.random() * 0.4,
-        vx: (Math.random() - 0.5) * 0.6,
-        vy: -0.4 - Math.random() * 0.6,
-      });
+      const target = 24;
+      while (bubbles.length < target) {
+        bubbles.push({
+          x: Math.random() * w,
+          y: h * 0.15 + Math.random() * h * 0.7,
+          vx: (Math.random() - 0.5) * 0.4,
+          vy: (Math.random() - 0.5) * 0.3,
+          text: phrases[Math.floor(Math.random() * phrases.length)],
+          alpha: 0.5 + Math.random() * 0.4,
+          size: 11 + Math.random() * 4,
+        });
+      }
     };
 
-    let raf = 0;
     let running = true;
-    const tick = () => {
+    const draw = () => {
       if (!running) return;
       ctx.clearRect(0, 0, c.width, c.height);
       ctx.save();
       ctx.scale(dpr, dpr);
-      ctx.font = '13px "Inter", sans-serif';
-      ctx.textAlign = "center";
-      ctx.textBaseline = "middle";
       for (const b of bubbles) {
         b.x += b.vx;
         b.y += b.vy;
+        if (b.x < 20) b.vx = Math.abs(b.vx);
+        if (b.x > c.clientWidth - 20) b.vx = -Math.abs(b.vx);
+        if (b.y < 20) b.vy = Math.abs(b.vy);
+        if (b.y > c.clientHeight - 20) b.vy = -Math.abs(b.vy);
+
         ctx.globalAlpha = b.alpha;
-        // pill background
-        const w = ctx.measureText(b.text).width + 24;
-        const h = 26;
+        ctx.font = `${b.size}px "Inter", sans-serif`;
+        const w = ctx.measureText(b.text).width + 20;
+        const h = b.size + 12;
         ctx.fillStyle = "#1f4ed8";
-        ctx.beginPath();
-        const x = b.x - w / 2;
-        const y = b.y - h / 2;
-        const rad = 13;
-        ctx.moveTo(x + rad, y);
-        ctx.arcTo(x + w, y, x + w, y + h, rad);
-        ctx.arcTo(x + w, y + h, x, y + h, rad);
-        ctx.arcTo(x, y + h, x, y, rad);
-        ctx.arcTo(x, y, x + w, y, rad);
-        ctx.closePath();
+        roundedRect(ctx, b.x - w / 2, b.y - h / 2, w, h, 12);
         ctx.fill();
         ctx.fillStyle = "#f3efe5";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
         ctx.fillText(b.text, b.x, b.y);
       }
       ctx.restore();
-      bubbles.forEach((b, i) => { if (b.y < -60) bubbles.splice(i, 1); });
-      if (Math.random() < 0.06) spawn();
-      raf = requestAnimationFrame(tick);
+      requestAnimationFrame(draw);
     };
-    tick();
-    return () => { running = false; cancelAnimationFrame(raf); };
+    fill();
+    draw();
+
+    return () => { running = false; };
   }
 
-  let cleanup: (() => void) | undefined;
-  let active = false;
+  function roundedRect(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, r: number) {
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.arcTo(x + w, y, x + w, y + h, r);
+    ctx.arcTo(x + w, y + h, x, y + h, r);
+    ctx.arcTo(x, y + h, x, y, r);
+    ctx.arcTo(x, y, x + w, y, r);
+    ctx.closePath();
+  }
 
+  // Sequence when section enters viewport:
+  // 1. Babble fills screen
+  // 2. Blue line sweeps left-to-right through babble (clears it visually)
+  // 3. Title "Conversations" fades in
+  // 4. Cards drop in
   const io = new IntersectionObserver(
     (entries) => {
       entries.forEach((e) => {
-        if (e.isIntersecting && !active) {
-          active = true;
-          section?.classList.add("in");
+        if (e.isIntersecting && !triggered) {
+          triggered = true;
           if (canvas && !cleanup) cleanup = setupBabble(canvas);
-          // Stop babble after 3s — Conversations title is the focus
+          // Babble renders for ~1.6s before strike
           setTimeout(() => {
-            if (canvas) canvas.style.opacity = "0";
-          }, 3500);
+            section?.classList.add("strike");
+            // Hide babble at end of strike (the line "cleared" it)
+            setTimeout(() => {
+              if (canvas) canvas.style.opacity = "0";
+              section?.classList.add("reveal");
+            }, 700);
+          }, 1600);
+          io.disconnect();
         }
       });
     },
-    { threshold: 0.3 }
+    { threshold: 0.4 }
   );
   if (section) io.observe(section);
 
-  // Carousel nav
   document.querySelectorAll<HTMLElement>("[data-carousel]").forEach((c) => {
     const track = c.querySelector<HTMLElement>("[data-track]");
     if (!track) return;

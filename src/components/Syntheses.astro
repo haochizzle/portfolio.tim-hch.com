@@ -2,32 +2,35 @@
 import { syntheses } from "../data/content.ts";
 import ScrollCue from "./ScrollCue.astro";
 
-const partnerLogos: Record<string, string> = {
-  "chainlink-quadrillions": "⛓", // unicode fallback — Tim to provide real logos
-  "fileverse-anti-docs": "◫",
-  "keycard-shell-gameboy": "▢",
-  "zora-paid-me": "◉",
+// Inline SVG partner logos — clean monochrome, no external deps.
+// Replace these with real ones when partner assets are provided.
+const logos: Record<string, string> = {
+  "chainlink-quadrillions": `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L4 7v10l8 5 8-5V7l-8-5z"/><path d="M12 2v20M4 7l16 10M20 7L4 17"/></svg>`,
+  "fileverse-anti-docs": `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="3" width="16" height="18" rx="1"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>`,
+  "keycard-shell-gameboy": `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="6" width="18" height="12" rx="1.5"/><circle cx="8" cy="12" r="1.5" fill="currentColor"/><circle cx="16" cy="12" r="1.5" fill="currentColor"/></svg>`,
+  "zora-paid-me": `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><path d="M12 3v4M12 17v4M3 12h4M17 12h4"/></svg>`,
 };
 ---
 
 <section class="syntheses" id="syntheses">
   <div class="stage">
-    <h2 class="arc-title cursive" aria-label="Syntheses">
-      <svg class="cursive-svg" viewBox="0 0 600 120" aria-hidden="true">
+    <h2 class="arc-title cursive" aria-label="Syntheses" data-title>
+      <span class="fallback cursive">Syntheses</span>
+      <svg class="cursive-svg" viewBox="0 0 600 140" aria-hidden="true">
         <defs>
-          <path id="synth-path" d="M 20 80 Q 50 20, 90 70 T 180 60 Q 230 10, 290 70 T 400 60 Q 450 20, 510 70 T 580 60" fill="none" />
+          <path id="synth-path" d="M 20 100 Q 50 30, 90 80 Q 130 130, 180 70 Q 230 20, 290 80 Q 350 130, 400 70 Q 450 30, 510 80 Q 560 110, 580 80" fill="none" />
         </defs>
-        <text class="cursive-text">
+        <text class="cursive-stroke">
           <textPath href="#synth-path" startOffset="0">Syntheses</textPath>
         </text>
       </svg>
-      <span class="fallback cursive">Syntheses</span>
     </h2>
 
-    <div class="grid" data-grid>
+    <div class="row" data-row>
       {syntheses.map((v, i) => (
         <article class="card video-card" style={`--i:${i}`}>
-          <div class="logo" aria-hidden="true">{partnerLogos[v.id] ?? "◇"}</div>
+          <div class="logo" aria-hidden="true" set:html={logos[v.id] ?? ""}></div>
+          <h3 class="serif">{v.title}</h3>
           <div class="embed">
             <iframe
               src={`https://www.youtube-nocookie.com/embed/${v.youtubeId}`}
@@ -36,10 +39,6 @@ const partnerLogos: Record<string, string> = {
               allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowfullscreen
             ></iframe>
-          </div>
-          <div class="meta">
-            <h3 class="serif">{v.title}</h3>
-            <p>{v.description}</p>
           </div>
         </article>
       ))}
@@ -51,93 +50,95 @@ const partnerLogos: Record<string, string> = {
 <style>
   .syntheses {
     position: relative;
-    min-height: 100vh;
-    min-height: 100svh;
+    height: 100vh;
+    height: 100svh;
     background: var(--cream);
-    padding: 120px 24px 96px;
+    padding: 100px 32px 80px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .stage {
-    max-width: 1080px;
-    margin: 0 auto;
+    width: 100%;
+    max-width: 1400px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 64px;
+    gap: 48px;
   }
 
-  /* Cursive title — draw-on via stroke-dashoffset */
+  /* Cursive title — draw-on via stroke-dashoffset, triggered when in view */
   .arc-title {
     width: 100%;
-    max-width: 600px;
+    max-width: 420px;
     text-align: center;
     position: relative;
     margin: 0;
+    height: 80px;
   }
-  .arc-title .cursive-svg { width: 100%; height: auto; overflow: visible; display: block; }
   .arc-title .fallback { display: none; }
+  .arc-title .cursive-svg { width: 100%; height: 100%; overflow: visible; display: block; }
 
-  /* Draw the cursive word with stroke-dashoffset trick using a visible invisible-line */
-  .cursive-svg text {
+  .cursive-stroke text {
     font-family: var(--cursive);
-    font-size: 90px;
+    font-size: 110px;
+    font-weight: 700;
     fill: transparent;
     stroke: var(--ink);
-    stroke-width: 0.8;
-    stroke-dasharray: 800;
-    stroke-dashoffset: 800;
-    animation: draw 1800ms var(--ease) 200ms forwards;
+    stroke-width: 1;
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+  }
+  /* When section enters view, run the draw */
+  .syntheses.in .cursive-stroke text {
+    animation:
+      draw 1800ms var(--ease) forwards,
+      fill-in 700ms var(--ease) 1700ms forwards;
   }
   @keyframes draw {
     to { stroke-dashoffset: 0; }
   }
-  /* After draw, fill in solid (simulate ink absorbing) */
-  .cursive-svg text {
-    animation: draw 1800ms var(--ease) 200ms forwards,
-               fill-in 700ms var(--ease) 1700ms forwards;
-  }
   @keyframes fill-in {
-    to { fill: var(--ink); stroke-width: 0.4; }
+    to { fill: var(--ink); stroke-width: 0.3; }
   }
 
-  /* Cards grid — 1 row on desktop, 1 col on mobile, intentional */
-  .grid {
+  /* Single row of 4 — no >1 row, no >1 column */
+  .row {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 36px;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
     width: 100%;
-  }
-  @media (min-width: 1000px) {
-    .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   }
 
   .card {
-    opacity: 0;
-    transform: translateY(40px);
-    transition: opacity 700ms var(--ease), transform 700ms var(--ease);
-  }
-  .grid.in .card {
-    opacity: 1;
-    transform: translateY(0);
-    transition-delay: calc(200ms + var(--i) * 130ms);
-  }
-
-  .video-card {
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: 12px;
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  .syntheses.in .card {
+    animation: card-in 700ms var(--ease) forwards;
+    animation-delay: calc(2400ms + var(--i) * 110ms);
+  }
+  @keyframes card-in {
+    to { opacity: 1; transform: translateY(0); }
   }
 
   .logo {
-    width: 28px;
-    height: 28px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.1rem;
+    width: 24px;
+    height: 24px;
     color: var(--ink);
-    border: 1px solid var(--ink);
-    border-radius: 50%;
+  }
+  .logo :global(svg) { width: 100%; height: 100%; }
+
+  .card h3 {
+    font-size: 1rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    line-height: 1.3;
   }
 
   .embed {
@@ -149,38 +150,36 @@ const partnerLogos: Record<string, string> = {
   }
   .embed iframe { width: 100%; height: 100%; border: 0; }
 
-  .meta h3 {
-    font-size: 1.4rem;
-    font-weight: 500;
-    margin-bottom: 4px;
+  /* Horizontal scroll on narrow screens — still 1 row, but scrollable */
+  @media (max-width: 1100px) {
+    .row {
+      grid-template-columns: repeat(4, 280px);
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      padding-bottom: 8px;
+    }
+    .card { scroll-snap-align: start; }
   }
-  .meta p {
-    color: var(--ink-mute);
-    font-size: 0.92rem;
-    line-height: 1.55;
-  }
-
   @media (max-width: 720px) {
-    .grid { grid-template-columns: 1fr; }
-    .syntheses { padding: 80px 20px; }
+    .syntheses { padding: 80px 16px 60px; }
+    .row { grid-template-columns: repeat(4, 240px); gap: 12px; }
   }
 </style>
 
 <script>
-  // Trigger card drop-in when section enters viewport
+  // Trigger cursive draw + card drop when section enters viewport
   const syntheses = document.getElementById("syntheses");
-  const grid = syntheses?.querySelector("[data-grid]");
-  if (syntheses && grid) {
+  if (syntheses) {
     const io = new IntersectionObserver(
       (entries) => {
         entries.forEach((e) => {
           if (e.isIntersecting) {
-            grid.classList.add("in");
+            syntheses.classList.add("in");
             io.disconnect();
           }
         });
       },
-      { threshold: 0.25 }
+      { threshold: 0.4 }
     );
     io.observe(syntheses);
   }
