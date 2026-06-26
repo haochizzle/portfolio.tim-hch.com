@@ -133,12 +133,12 @@ const sections = [
     menu!.hidden = false;
     requestAnimationFrame(() => {
       hamburger!.setAttribute("aria-expanded", "true");
-      document.body.style.overflow = "hidden";
+      document.documentElement.style.overflow = "hidden";
     });
   };
   const shut = () => {
     hamburger!.setAttribute("aria-expanded", "false");
-    document.body.style.overflow = "";
+    document.documentElement.style.overflow = "";
     setTimeout(() => { menu!.hidden = true; }, 350);
   };
 
