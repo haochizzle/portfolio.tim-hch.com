@@ -48,29 +48,29 @@ export const syntheses: Video[] = [
     id: "chainlink-quadrillions",
     title: "Quadrillions",
     description: "",
-    youtubeId: "dQw4w9WgXcQ", // PENDING: Tim to supply real YouTube ID
-    publishedAt: "2025-08-12",
+    youtubeId: "HnIVu22jAC4",
+    publishedAt: "2026-01-09",
   },
   {
     id: "fileverse-anti-docs",
     title: "Anti-Google Docs",
     description: "",
-    youtubeId: "dQw4w9WgXcQ", // PENDING
+    youtubeId: "Gu4y0SZNmoU",
     publishedAt: "2025-09-04",
   },
   {
     id: "keycard-shell-gameboy",
     title: "Gameboy or Wallet?",
     description: "",
-    youtubeId: "dQw4w9WgXcQ", // PENDING
-    publishedAt: "2026-04-18",
+    youtubeId: "HgXoI4jad-g",
+    publishedAt: "2026-05-20",
   },
   {
     id: "zora-paid-me",
     title: "Guess Which Paid Me?",
     description: "",
-    youtubeId: "dQw4w9WgXcQ", // PENDING
-    publishedAt: "2025-11-22",
+    youtubeId: "NJX_z4i8c_E",
+    publishedAt: "2025-05-28",
   },
 ];
 
@@ -81,28 +81,21 @@ export const conversations: Conversation[] = [
     guest: "Jimmy (cygaar)",
     title: "Good Tech Won't Save You",
     context: "Five years in crypto. Trust, distribution, people — what outlasts code.",
-    youtubeId: "dQw4w9WgXcQ",
-  },
-  {
-    id: "timofey",
-    guest: "Timofey",
-    title: "On Building Through the Bear",
-    context: "Building when nobody's watching. The unglamorous middle.",
-    youtubeId: "dQw4w9WgXcQ",
+    youtubeId: "OvMEl4L-0bY",
   },
   {
     id: "zy0n",
     guest: "zy0n",
     title: "Privacy for the Sovereign Individual",
     context: "Railgun x zy0n. Nelson BC. The conversation that defined the channel.",
-    youtubeId: "dQw4w9WgXcQ",
+    youtubeId: "8qhMECRarpE",
   },
   {
-    id: "oskar",
-    guest: "Oskar",
-    title: "Distribution Over Code",
-    context: "Why the next cycle is won by the people who ship, not the ones who spec.",
-    youtubeId: "dQw4w9WgXcQ",
+    id: "timofey",
+    guest: "Timofey",
+    title: "On Building Through the Bear",
+    context: "Building when nobody's watching. The unglamorous middle.",
+    youtubeId: "SHXgT17J874",
   },
 ];
 
