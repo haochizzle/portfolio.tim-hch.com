@@ -8,17 +8,29 @@ const featuredVideos = [
   { id: 'fk-cC0WyVgY', title: 'Keystone', desc: 'Air-gapped hardware wallet architecture' },
 ];
 
+// Conversations — order: Jimmy → Timofey → zy0n → chronological by upload
+const conversations = [
+  { id: 'OvMEl4L-0bY', subject: 'Jimmy', context: 'Independent dev', date: '' },
+  { id: 'SHXgT17J874', subject: 'Timofey', context: 'ChainSafe', date: '' },
+  { id: '8qhMECRarpE', subject: 'zy0n', context: 'Railgun', date: '' },
+  { id: 'p-cKWfAj6nI', subject: 'Oskar', context: 'Ethereum Foundation · IPTF', date: '' },
+  { id: 'N7i1wAnGOpI', subject: 'Alan Scott', context: 'Railgun', date: '' },
+  { id: '6KaxUw5YZe0', subject: 'Chris Blake', context: 'Independent researcher', date: '' },
+  { id: '2uwr6wk29lg', subject: 'Phil Ngo', context: 'Ethereum · Lodestar', date: '' },
+];
+
+// Hand-authored social cards — Tim to provide pull-quotes
 const featuredX = [
-  { url: 'https://x.com/haochizzle/status/2008904544810672165', label: 'Chainlink thread' },
-  { url: 'https://x.com/haochizzle/status/1963644879445409898', label: 'Fileverse' },
-  { url: 'https://x.com/haochizzle/status/2052071872146100552', label: 'zy0n / Railgun' },
-  { url: 'https://x.com/haochizzle/status/1943297527916404901', label: 'Alan Scott / Railgun' },
-  { url: 'https://x.com/haochizzle/status/2057114739457528157', label: 'Keycard Shell review' },
+  { url: 'https://x.com/haochizzle/status/2008904544810672165', label: 'Chainlink thread', quote: 'ADD_PULL_QUOTE' },
+  { url: 'https://x.com/haochizzle/status/1963644879445409898', label: 'Fileverse', quote: 'ADD_PULL_QUOTE' },
+  { url: 'https://x.com/haochizzle/status/2052071872146100552', label: 'zy0n / Railgun', quote: 'ADD_PULL_QUOTE' },
+  { url: 'https://x.com/haochizzle/status/1943297527916404901', label: 'Alan Scott / Railgun', quote: 'ADD_PULL_QUOTE' },
+  { url: 'https://x.com/haochizzle/status/2057114739457528157', label: 'Keycard Shell review', quote: 'ADD_PULL_QUOTE' },
 ];
 
 const featuredReddit = [
-  { url: 'https://www.reddit.com/r/ethereum/comments/1ua9dop/good_tech_wont_save_you_a_5year_crypto_dev_shares/', label: 'Jimmy interview — "Good tech won\'t save you"' },
-  { url: 'https://www.reddit.com/r/ethereum/comments/1tioe3q/meet_the_hardware_wallet_that_looks_like_a_game/', label: 'Keycard Shell — r/ethereum launch' },
+  { url: 'https://www.reddit.com/r/ethereum/comments/1ua9dop/good_tech_wont_save_you_a_5year_crypto_dev_shares/', label: 'Jimmy interview — "Good tech won\'t save you"', quote: 'ADD_PULL_QUOTE' },
+  { url: 'https://www.reddit.com/r/ethereum/comments/1tioe3q/meet_the_hardware_wallet_that_looks_like_a_game/', label: 'Keycard Shell — r/ethereum launch', quote: 'ADD_PULL_QUOTE' },
 ];
 
 const featuredWriting = [
@@ -26,20 +38,11 @@ const featuredWriting = [
   { url: 'https://medium.com/thecapital/forget-the-money-and-hype-this-is-the-reason-why-blockchains-will-define-our-future-e9184b375c31', label: 'Forget the Money & Hype', pub: 'The Capital · Medium' },
   { url: 'https://tim-hch.medium.com/children-of-orchid-2b2f900e6e9b', label: 'Children of Orchid', pub: 'Personal · Medium' },
 ];
-
-// Interview trailers — placeholder IDs; replace with real YouTube IDs from Tim's catalog
-const trailers = [
-  { id: 'TRAILER_ZY0N_ID', label: 'zy0n — Railgun' },
-  { id: 'TRAILER_ALAN_SCOTT_ID', label: 'Alan Scott — Railgun' },
-  { id: 'TRAILER_JIMMY_ID', label: 'Jimmy — r/ethereum' },
-  { id: 'TRAILER_FILEVERSE_ID', label: 'Fileverse' },
-  { id: 'TRAILER_KEYCARD_ID', label: 'Keycard Shell' },
-];
 ---
 
 <Base
-  title="Tim Ho — 0xtim.eth · Crypto, AI & Editorial"
-  description="9-year web3 veteran. Founder of an 18.5K-subscriber crypto channel. Built and shipped production autonomous AI systems."
+  title="Tim Ho — 0xtim.eth"
+  description="On-disk. Online. Onchain. Nine years building the systems behind the work."
 >
   <header class="site-header">
     <div class="container header-inner">
@@ -49,7 +52,7 @@ const trailers = [
       <nav class="nav">
         <a href="#work">Work</a>
         <a href="#videos">Videos</a>
-        <a href="#interviews">Interviews</a>
+        <a href="#conversations">Conversations</a>
         <a href="#writing">Writing</a>
         <a href="#social">Social</a>
         <a href="#contact" class="nav-cta">Contact</a>
@@ -61,33 +64,34 @@ const trailers = [
   <section id="top" class="hero">
     <div class="container hero-grid">
       <div class="hero-copy">
-        <div class="kicker">0xtim.eth · @haochizzle · @90secondscrypto</div>
         <h1 class="hero-title">
-          Crypto-native operator.<br/>
-          Builder of <span class="accent">autonomous systems</span>.<br/>
-          <span class="muted">Editorial, on record.</span>
+          <span class="thesis-line">
+            <span class="thesis-word">ON-DISK</span><span class="thesis-sep">.</span><span class="thesis-word">ONLINE</span><span class="thesis-sep">.</span><span class="thesis-word onchain">ONCHAIN</span>
+          </span>
         </h1>
-        <p class="hero-sub">
-          9-year web3 veteran. Founded a solo crypto education channel to 18.5K YouTube subscribers and 130+ shipped videos. Architected and operated a production AI intelligence system that turns fragmented attention signals into content decisions — running 24/7, autonomously, within a defined risk mandate.
+        <p class="thesis-sub"><em>My professional thesis.</em></p>
+        <p class="thesis-body">
+          Nine years in, still building the same thing: the systems behind the work. First the storage, then the distribution, then the rails. The tools keep changing. The hands keep typing.
         </p>
         <div class="hero-cta">
           <a href="/cv.pdf" class="btn btn-primary" download>
             Download CV
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
           </a>
-          <a href="#interviews" class="btn btn-ghost">Watch the showreel →</a>
+          <a href="#conversations" class="btn btn-ghost">Watch conversations →</a>
         </div>
       </div>
       <div class="hero-photo">
         <div class="photo-frame">
           <div class="photo-placeholder">
-            <span>Headshot goes here</span>
-            <small>Replace with new shoot</small>
+            <span>Headshot</span>
+            <small>Drop a new photo in</small>
+            <small>src/assets/headshot.jpg</small>
           </div>
         </div>
         <div class="photo-meta">
           <span class="dot"></span>
-          <span>Open to DevRel, BD, and AI systems roles</span>
+          <span>Open to DevRel, BD, content, AI systems roles</span>
         </div>
       </div>
     </div>
@@ -114,6 +118,27 @@ const trailers = [
     </div>
   </section>
 
+  <!-- 90 SECONDS TO CRYPTO — CALLOUT -->
+  <section id="channel" class="channel-section">
+    <div class="container">
+      <div class="channel-callout">
+        <div class="channel-meta">
+          <div class="section-label">Founder · Aug 2024 – Present</div>
+          <h2 class="channel-title">
+            <a href="https://youtube.com/@90secondscrypto" target="_blank" rel="noopener">90 Seconds to Crypto →</a>
+          </h2>
+          <p class="channel-desc">
+            A solo-operated crypto education channel. Research, scripting, filming, production, and marketing — end-to-end. Built to 18.5K YouTube subscribers, 130+ videos, and 680K+ lifetime impressions across platforms. Top-performing work pulls 20K+ views on X and 120K+ on Reddit. Regular collaborations with core contributors across Railgun, Fileverse, the Ethereum Foundation, and Gnosis Guild.
+          </p>
+          <div class="channel-links">
+            <a href="https://youtube.com/@90secondscrypto" target="_blank" rel="noopener" class="btn btn-ghost btn-sm">YouTube →</a>
+            <a href="https://x.com/90secondscrypto" target="_blank" rel="noopener" class="btn btn-ghost btn-sm">X →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- WORK -->
   <section id="work">
     <div class="container">
@@ -125,16 +150,16 @@ const trailers = [
 
       <div class="job">
         <div class="job-header">
-          <div class="job-title">Founder</div>
+          <div class="job-title">Founder · 90 Seconds to Crypto</div>
           <div class="job-when">Aug 2024 – Present</div>
         </div>
-        <div class="job-org">90 Seconds to Crypto · Global Remote</div>
+        <div class="job-org">Global Remote</div>
         <ul class="job-bullets">
-          <li>Built and scaled a solo-operated crypto education channel to <strong>18.5K YouTube subscribers</strong> and <strong>130+ videos</strong>, with top-performing content generating <strong>20K+ views on X</strong> and <strong>120K+ on Reddit</strong>.</li>
-          <li>Owned the end-to-end full-funnel content engine: research, scripting, filming, production, marketing.</li>
-          <li><strong>5% CTR</strong> and <strong>50% average view duration</strong> on top YouTube performers — well above category benchmark.</li>
-          <li>Regular collaborations with core protocol contributors: <strong>Railgun, Fileverse, Ethereum Foundation, Gnosis Guild</strong>, and more — across scripting, filming, publishing, and co-launching videos.</li>
-          <li>Architected and operated a <strong>production AI intelligence system</strong> using OpenClaw + Hermes agent harnesses and multi-model routing (Claude Opus/Sonnet, GLM, Minimax, GPT-5.5) to automate competitive research, narrative detection, and sentiment analysis — turning fragmented attention signals into actionable content decisions.</li>
+          <li>Built and scaled a solo crypto education channel to <strong>18.5K YouTube subscribers</strong> and <strong>130+ videos</strong>. Top-performing content pulled <strong>20K+ views on X</strong> and <strong>120K+ on Reddit</strong>.</li>
+          <li><strong>5% CTR</strong> and <strong>50% average view duration</strong> on top performers — well above category benchmark.</li>
+          <li>Owned the full content engine: research, scripting, filming, production, marketing.</li>
+          <li>Regular collaborations with core protocol contributors across <strong>Railgun, Fileverse, the Ethereum Foundation, and Gnosis Guild</strong>.</li>
+          <li>Architected and operated a <strong>production AI intelligence system</strong> using OpenClaw + Hermes agent harnesses and multi-model routing (Claude, GLM, Minimax, GPT) to automate competitive research, narrative detection, and sentiment analysis — turning fragmented attention signals into content decisions.</li>
         </ul>
       </div>
 
@@ -205,38 +230,39 @@ const trailers = [
     </div>
   </section>
 
-  <!-- INTERVIEWS / TRAILERS -->
-  <section id="interviews">
+  <!-- CONVERSATIONS -->
+  <section id="conversations">
     <div class="container">
-      <div class="section-label">Interviews · Showreel</div>
-      <h2>Long-form conversations.</h2>
+      <div class="section-label">Conversations</div>
+      <h2>Long-form talks with the people doing the work.</h2>
       <p class="section-intro">
-        Builders, researchers, and protocol leads — in their own words. Click to play. Use the rail to jump to another.
+        Builders, researchers, and protocol leads — in their own words. Click a poster to play. Use the rail to jump between.
       </p>
 
       <div class="showreel" id="showreel">
         <div class="featured-trailer" id="featuredTrailer">
           <div class="trailer-poster" id="trailerPoster">
-            <img id="posterImg" src={`https://i.ytimg.com/vi/${trailers[0].id}/maxresdefault.jpg`} alt={trailers[0].label} />
-            <button class="play-btn" id="playBtn" aria-label="Play trailer">
+            <img id="posterImg" src={`https://i.ytimg.com/vi/${conversations[0].id}/maxresdefault.jpg`} alt={`${conversations[0].subject} — ${conversations[0].context}`} />
+            <button class="play-btn" id="playBtn" aria-label="Play conversation">
               <svg width="64" height="64" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
             </button>
-            <div class="trailer-label" id="trailerLabel">{trailers[0].label}</div>
+            <div class="trailer-label" id="trailerLabel">{conversations[0].subject} — {conversations[0].context}</div>
           </div>
           <div class="trailer-iframe-wrap" id="trailerFrame" hidden></div>
         </div>
 
         <div class="trailer-controls">
           <button class="btn btn-ghost btn-sm" id="nextTrailer">
-            Watch another →
+            Next conversation →
           </button>
         </div>
 
         <div class="trailer-rail" id="trailerRail">
-          {trailers.map((t, i) => (
-            <button class={`rail-item ${i === 0 ? 'active' : ''}`} data-id={t.id} data-label={t.label} data-index={i}>
-              <img src={`https://i.ytimg.com/vi/${t.id}/mqdefault.jpg`} alt={t.label} loading="lazy" />
-              <span class="rail-label">{t.label}</span>
+          {conversations.map((c, i) => (
+            <button class={`rail-item ${i === 0 ? 'active' : ''}`} data-id={c.id} data-label={`${c.subject} — ${c.context}`} data-index={i}>
+              <img src={`https://i.ytimg.com/vi/${c.id}/mqdefault.jpg`} alt={`${c.subject} — ${c.context}`} loading="lazy" />
+              <span class="rail-label">{c.subject}</span>
+              <span class="rail-context">{c.context}</span>
             </button>
           ))}
         </div>
@@ -264,7 +290,7 @@ const trailers = [
     </div>
   </section>
 
-  <!-- SOCIAL -->
+  <!-- SOCIAL — hand-authored cards -->
   <section id="social">
     <div class="container">
       <div class="section-label">X / Twitter · Selected</div>
@@ -272,24 +298,34 @@ const trailers = [
       <p class="section-intro">
         Threads on Chainlink, Fileverse, Railgun, and Keycard — protocol-native analysis, not hot takes.
       </p>
-      <div class="x-list">
+      <div class="cards-grid">
         {featuredX.map(x => (
-          <a href={x.url} target="_blank" rel="noopener" class="x-row">
-            <div class="x-handle">@haochizzle</div>
-            <div class="x-label">{x.label}</div>
-            <div class="x-arrow">→</div>
+          <a href={x.url} target="_blank" rel="noopener" class="social-card">
+            <div class="social-card-quote">
+              {x.quote === 'ADD_PULL_QUOTE' ? <span class="placeholder">Pull quote goes here</span> : x.quote}
+            </div>
+            <div class="social-card-meta">
+              <div class="social-card-handle">@haochizzle</div>
+              <div class="social-card-label">{x.label}</div>
+            </div>
+            <div class="social-card-arrow">→</div>
           </a>
         ))}
       </div>
 
       <div class="section-label reddit-label">Reddit · Selected</div>
       <h3 class="sub-h">Top-performing Reddit posts.</h3>
-      <div class="x-list">
+      <div class="cards-grid">
         {featuredReddit.map(r => (
-          <a href={r.url} target="_blank" rel="noopener" class="x-row">
-            <div class="x-handle">u/haochizzle</div>
-            <div class="x-label">{r.label}</div>
-            <div class="x-arrow">→</div>
+          <a href={r.url} target="_blank" rel="noopener" class="social-card">
+            <div class="social-card-quote">
+              {r.quote === 'ADD_PULL_QUOTE' ? <span class="placeholder">Pull quote goes here</span> : r.quote}
+            </div>
+            <div class="social-card-meta">
+              <div class="social-card-handle">u/haochizzle</div>
+              <div class="social-card-label">{r.label}</div>
+            </div>
+            <div class="social-card-arrow">→</div>
           </a>
         ))}
       </div>
@@ -326,10 +362,9 @@ const trailers = [
 </Base>
 
 <script is:inline>
-  // Trailer showreel — click poster to play, "Watch another" cycles, rail click jumps
+  // Conversation showreel
   (function () {
     const posters = document.querySelectorAll('.rail-item');
-    const posterWrap = document.getElementById('featuredTrailer');
     const posterImg = document.getElementById('posterImg');
     const posterEl = document.getElementById('trailerPoster');
     const labelEl = document.getElementById('trailerLabel');
@@ -359,7 +394,7 @@ const trailers = [
 
     function play() {
       const item = items[current];
-      if (!item || item.id.startsWith('TRAILER_')) return; // placeholder
+      if (!item) return;
       frameWrap.innerHTML = `<iframe src="https://www.youtube.com/embed/${item.id}?autoplay=1&rel=0" frameborder="0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen style="position:absolute;inset:0;width:100%;height:100%;border-radius:12px;"></iframe>`;
       frameWrap.hidden = false;
       frameWrap.style.cssText = 'position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:12px;';
@@ -380,7 +415,7 @@ const trailers = [
 
     // Smooth-scroll active state for nav
     const navLinks = document.querySelectorAll('.nav a');
-    const sections = ['top', 'work', 'videos', 'interviews', 'writing', 'social', 'contact'];
+    const sections = ['top', 'work', 'videos', 'conversations', 'writing', 'social', 'contact'];
     window.addEventListener('scroll', () => {
       let active = sections[0];
       for (const id of sections) {
@@ -420,16 +455,8 @@ const trailers = [
   }
   .brand:hover { color: var(--text); }
   .brand-mark { color: var(--accent); }
-  .nav {
-    display: flex;
-    gap: 28px;
-    align-items: center;
-  }
-  .nav a {
-    color: var(--text-muted);
-    font-size: 0.9rem;
-    font-weight: 500;
-  }
+  .nav { display: flex; gap: 28px; align-items: center; }
+  .nav a { color: var(--text-muted); font-size: 0.9rem; font-weight: 500; }
   .nav a:hover, .nav a.active { color: var(--text); }
   .nav-cta {
     background: var(--accent-soft);
@@ -442,7 +469,7 @@ const trailers = [
     .nav a:not(.nav-cta) { display: none; }
   }
 
-  /* Hero */
+  /* Hero — ON-DISK ONLINE ONCHAIN */
   .hero { padding: 80px 0 64px; }
   .hero-grid {
     display: grid;
@@ -450,23 +477,43 @@ const trailers = [
     gap: 64px;
     align-items: center;
   }
-  .kicker {
-    font-family: var(--font-mono);
-    font-size: 0.8rem;
-    color: var(--text-dim);
-    margin-bottom: 24px;
-  }
   .hero-title {
-    font-size: clamp(2.25rem, 5vw, 3.5rem);
-    letter-spacing: -0.03em;
+    font-size: clamp(2.5rem, 6.5vw, 4.5rem);
+    letter-spacing: -0.04em;
+    line-height: 1.0;
     margin-bottom: 24px;
+    font-weight: 800;
   }
-  .accent { color: var(--accent); }
-  .muted { color: var(--text-muted); font-weight: 500; }
-  .hero-sub {
+  .thesis-line {
+    display: block;
+  }
+  .thesis-word {
+    display: inline-block;
+  }
+  .thesis-sep {
+    color: var(--accent);
+    margin: 0 0.08em;
+  }
+  .thesis-word.onchain {
+    background: linear-gradient(90deg, var(--accent) 0%, #ffffff 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    filter: drop-shadow(0 0 16px rgba(250, 204, 21, 0.25));
+  }
+  .thesis-sub {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+    font-style: italic;
+  }
+  .thesis-sub em { font-style: italic; }
+  .thesis-body {
     color: var(--text-muted);
     font-size: 1.0625rem;
-    max-width: 600px;
+    line-height: 1.65;
+    max-width: 580px;
     margin-bottom: 32px;
   }
   .hero-cta { display: flex; gap: 12px; flex-wrap: wrap; }
@@ -544,10 +591,7 @@ const trailers = [
     color: var(--text-muted);
     margin-left: 2px;
   }
-  .metric-label {
-    font-size: 0.8rem;
-    color: var(--text-muted);
-  }
+  .metric-label { font-size: 0.8rem; color: var(--text-muted); }
   @media (max-width: 720px) {
     .metrics { grid-template-columns: repeat(2, 1fr); gap: 20px; }
   }
@@ -564,21 +608,50 @@ const trailers = [
     border: 1px solid transparent;
     transition: all 0.15s ease;
   }
-  .btn-primary {
-    background: var(--accent);
-    color: #0a0a0a;
-  }
+  .btn-primary { background: var(--accent); color: #0a0a0a; }
   .btn-primary:hover { background: var(--link-hover); color: #0a0a0a; }
-  .btn-ghost {
-    background: transparent;
-    border-color: var(--border);
-    color: var(--text);
-  }
+  .btn-ghost { background: transparent; border-color: var(--border); color: var(--text); }
   .btn-ghost:hover { border-color: var(--text-muted); color: var(--text); }
   .btn-sm { padding: 8px 14px; font-size: 0.85rem; }
 
   /* Sections */
   section.alt { background: var(--bg-elev); }
+
+  /* 90 Seconds to Crypto callout */
+  .channel-section { padding: 64px 0; background: linear-gradient(180deg, var(--bg) 0%, var(--bg-elev) 100%); }
+  .channel-callout {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 48px;
+    background: var(--bg);
+    position: relative;
+    overflow: hidden;
+  }
+  .channel-callout::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px; height: 100%;
+    background: linear-gradient(180deg, var(--accent) 0%, transparent 100%);
+  }
+  .channel-title {
+    font-size: 2rem;
+    margin-bottom: 16px;
+  }
+  .channel-title a {
+    color: var(--text);
+    transition: color 0.15s ease;
+  }
+  .channel-title a:hover { color: var(--accent); }
+  .channel-desc {
+    color: var(--text-muted);
+    font-size: 1rem;
+    line-height: 1.65;
+    max-width: 720px;
+    margin-bottom: 20px;
+  }
+  .channel-desc strong { color: var(--text); font-weight: 600; }
+  .channel-links { display: flex; gap: 12px; }
 
   /* Jobs */
   .job {
@@ -609,10 +682,7 @@ const trailers = [
     color: var(--accent);
     margin-bottom: 16px;
   }
-  .job-bullets {
-    list-style: none;
-    padding: 0;
-  }
+  .job-bullets { list-style: none; padding: 0; }
   .job-bullets li {
     color: var(--text-muted);
     padding: 6px 0 6px 24px;
@@ -649,11 +719,7 @@ const trailers = [
     border-color: var(--accent);
     transform: translateY(-2px);
   }
-  .video-thumb {
-    position: relative;
-    aspect-ratio: 16 / 9;
-    background: #000;
-  }
+  .video-thumb { position: relative; aspect-ratio: 16 / 9; background: #000; }
   .video-thumb img { width: 100%; height: 100%; object-fit: cover; }
   .play-overlay {
     position: absolute;
@@ -672,7 +738,7 @@ const trailers = [
   .video-desc { font-size: 0.85rem; color: var(--text-muted); }
   .more-link { margin-top: 32px; text-align: center; }
 
-  /* Showreel */
+  /* Conversations showreel */
   .showreel { max-width: 960px; margin: 0 auto; }
   .featured-trailer {
     position: relative;
@@ -733,29 +799,37 @@ const trailers = [
     overflow: hidden;
     transition: border-color 0.15s ease;
     text-align: left;
-    display: block;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 10px;
   }
   .rail-item:hover { border-color: var(--text-muted); }
   .rail-item.active { border-color: var(--accent); }
   .rail-item img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
   .rail-label {
     display: block;
-    padding: 10px 12px;
-    font-size: 0.8rem;
-    font-weight: 500;
+    padding: 10px 12px 2px;
+    font-size: 0.85rem;
+    font-weight: 600;
     color: var(--text);
+  }
+  .rail-context {
+    display: block;
+    padding: 0 12px;
+    font-size: 0.75rem;
+    color: var(--text-muted);
   }
   @media (max-width: 720px) {
     .rail-item { flex: 0 0 160px; }
   }
 
   /* Writing list */
-  .writing-list, .x-list {
+  .writing-list {
     display: flex;
     flex-direction: column;
     border-top: 1px solid var(--border);
   }
-  .writing-row, .x-row {
+  .writing-row {
     display: grid;
     grid-template-columns: 200px 1fr 24px;
     gap: 24px;
@@ -764,23 +838,77 @@ const trailers = [
     align-items: center;
     transition: padding 0.15s ease;
   }
-  .writing-row:hover, .x-row:hover {
-    padding-left: 8px;
-  }
-  .writing-pub, .x-handle {
+  .writing-row:hover { padding-left: 8px; }
+  .writing-row:hover .writing-arrow { transform: translateX(4px); color: var(--accent); }
+  .writing-pub {
     font-family: var(--font-mono);
     font-size: 0.78rem;
     color: var(--text-dim);
   }
-  .writing-title, .x-label {
-    font-weight: 500;
-    color: var(--text);
-  }
-  .writing-arrow, .x-arrow {
+  .writing-title { font-weight: 500; color: var(--text); }
+  .writing-arrow {
     color: var(--text-dim);
     transition: transform 0.15s ease, color 0.15s ease;
   }
-  .writing-row:hover .writing-arrow, .x-row:hover .x-arrow {
+
+  /* Social cards — hand-authored */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+  }
+  .social-card {
+    background: var(--bg-elev);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    transition: all 0.2s ease;
+    min-height: 200px;
+    position: relative;
+  }
+  .social-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+  .social-card-quote {
+    font-size: 0.95rem;
+    line-height: 1.55;
+    color: var(--text);
+    flex: 1;
+    font-style: italic;
+  }
+  .social-card-quote .placeholder {
+    color: var(--text-dim);
+    font-style: normal;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+  }
+  .social-card-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+  }
+  .social-card-handle {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--text-dim);
+  }
+  .social-card-label {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+  }
+  .social-card-arrow {
+    position: absolute;
+    top: 24px; right: 24px;
+    color: var(--text-dim);
+    transition: transform 0.15s ease, color 0.15s ease;
+  }
+  .social-card:hover .social-card-arrow {
     transform: translateX(4px);
     color: var(--accent);
   }
