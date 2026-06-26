@@ -1,0 +1,840 @@
+---
+import Base from '../layouts/Base.astro';
+
+// 01 / Distribution — top-performing explainer videos
+// View counts from YouTube API (2026-06-26). Channel @90secondstocrypto.
+const distribution = [
+  {
+    id: 'dHiHR9jeuF8',
+    title: 'Chainlink',
+    line: 'Meet the slept King of blockchains.',
+    views: '4.1K',
+    accent: true,
+  },
+  {
+    id: 'Gu4y0SZNmoU',
+    title: 'Fileverse',
+    line: 'Why Fileverse is the Google Docs killer.',
+    views: '5.4K',
+  },
+  {
+    id: 'HgXoI4jad-g',
+    title: 'Keycard Shell',
+    line: 'The ugliest crypto wallet — and why that matters.',
+    views: '330',
+  },
+];
+
+// 02 / Writing — selected bylines
+const writing = [
+  {
+    url: 'https://medium.com/chainsafe-systems/introducing-the-privacy-engineering-team-dcf45511b286',
+    pub: 'ChainSafe Systems · Medium',
+    title: 'Introducing the Privacy Engineering Team',
+    blurb: 'How a six-person team took on privacy engineering across web3 infrastructure.',
+  },
+  {
+    url: 'https://medium.com/thecapital/forget-the-money-and-hype-this-is-the-reason-why-blockchains-will-define-our-future-e9184b375c31',
+    pub: 'The Capital · Medium',
+    title: 'Forget the Money & Hype',
+    blurb: 'The thing blockchains are actually for — and why the speculation misses it.',
+  },
+  {
+    url: 'https://tim-hch.medium.com/children-of-orchid-2b2f900e6e9b',
+    pub: 'Personal · Medium',
+    title: 'Children of Orchid',
+    blurb: 'A long, slow essay on cypherpunk lineage and what we inherited.',
+  },
+];
+
+// 03 / Network (Conversations) — interview trailers
+const conversations = [
+  { id: 'OvMEl4L-0bY', subject: 'Jimmy', context: 'Independent dev', featured: true },
+  { id: 'SHXgT17J874', subject: 'Timofey', context: 'ChainSafe' },
+  { id: '8qhMECRarpE', subject: 'zy0n', context: 'Railgun' },
+  { id: 'p-cKWfAj6nI', subject: 'Oskar', context: 'Ethereum Foundation · IPTF' },
+  { id: 'N7i1wAnGOpI', subject: 'Alan Scott', context: 'Railgun' },
+  { id: '6KaxUw5YZe0', subject: 'Chris Blake', context: 'Independent researcher' },
+  { id: '2uwr6wk29lg', subject: 'Phil Ngo', context: 'Ethereum · Lodestar' },
+];
+const featured = conversations.find(c => c.featured) || conversations[0];
+const rail = conversations.filter(c => c.id !== featured.id);
+---
+
+<Base
+  title="Tim Ho — 0xtim.eth"
+  description="I tell crypto stories that earn attention."
+>
+  <a href="#main" class="skip-link">Skip to content</a>
+
+  <!-- Fixed top-right nav -->
+  <nav class="top-nav" aria-label="Primary">
+    <a href="/cv.pdf" download class="top-nav-link">Resume</a>
+    <a href="mailto:tim@tim-hch.com" class="top-nav-link">Contact</a>
+  </nav>
+
+  <main id="main">
+
+    <!-- 00 / Hero -->
+    <section class="hero">
+      <div class="container hero-inner">
+        <div class="hero-label">00 / Editor's note</div>
+        <h1 class="hero-title">
+          I tell crypto stories <em>that earn attention.</em>
+        </h1>
+        <p class="hero-lede">
+          130+ explainers, seven long-form protocol interviews, and three published bylines. Distribution, narrative, and the long tail of trust. That's the work — first at ChainSafe, now full-time on 90 Seconds to Crypto.
+        </p>
+
+        <dl class="meta-row">
+          <div class="meta-cell">
+            <dt>Channel</dt>
+            <dd>youtube.com/@90secondstocrypto</dd>
+          </div>
+          <div class="meta-cell">
+            <dt>Status</dt>
+            <dd>Open to DevRel, BD, content</dd>
+          </div>
+          <div class="meta-cell">
+            <dt>Last shipped</dt>
+            <dd>zy0n / Railgun interview</dd>
+          </div>
+        </dl>
+      </div>
+    </section>
+
+    <!-- 01 / Distribution -->
+    <section class="section" id="distribution">
+      <div class="container">
+        <header class="section-head">
+          <div class="section-num">01</div>
+          <div class="section-titles">
+            <h2 class="section-title">Distribution that <em>compounds.</em></h2>
+            <p class="section-lede">
+              The explainer lane. Every piece has to land for a viewer who doesn't yet trust me — and reward the ones who already do. Three videos that did both.
+            </p>
+          </div>
+        </header>
+
+        <div class="dist-grid">
+          {distribution.map((v, i) => (
+            <article class={`dist-card ${v.accent ? 'dist-card-featured' : ''}`}>
+              <div class="dist-card-thumb" aria-hidden="true">
+                {v.accent ? (
+                  <div class="dist-thumb-gradient">
+                    <span class="dist-thumb-mark">CL</span>
+                  </div>
+                ) : (
+                  <div class="dist-thumb-solid">
+                    <span class="dist-thumb-mark">{v.title.slice(0, 2).toUpperCase()}</span>
+                  </div>
+                )}
+              </div>
+              <div class="dist-card-body">
+                <div class="dist-card-meta">
+                  <span class="dist-card-pub">90 Seconds to Crypto</span>
+                  <span class="dist-card-dot">·</span>
+                  <span class="dist-card-views">{v.views} views</span>
+                </div>
+                <h3 class="dist-card-title">{v.title}</h3>
+                <p class="dist-card-line">{v.line}</p>
+                <a href="https://youtube.com/@90secondscrypto" target="_blank" rel="noopener" class="dist-card-cta">
+                  Watch on YouTube <span aria-hidden="true">→</span>
+                </a>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- 02 / Writing -->
+    <section class="section section-alt" id="writing">
+      <div class="container">
+        <header class="section-head">
+          <div class="section-num">02</div>
+          <div class="section-titles">
+            <h2 class="section-title">Writing for <em>the long tail.</em></h2>
+            <p class="section-lede">
+              Bylines that still rank. Pieces I wrote once and that kept doing work — for the byline, for the protocol, for the search results.
+            </p>
+          </div>
+        </header>
+
+        <ul class="writing-list">
+          {writing.map(w => (
+            <li class="writing-item">
+              <a href={w.url} target="_blank" rel="noopener" class="writing-link">
+                <div class="writing-pub">{w.pub}</div>
+                <div class="writing-main">
+                  <h3 class="writing-title">{w.title}</h3>
+                  <p class="writing-blurb">{w.blurb}</p>
+                </div>
+                <div class="writing-arrow" aria-hidden="true">→</div>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- 03 / Network (Conversations) -->
+    <section class="section" id="network">
+      <div class="container">
+        <header class="section-head">
+          <div class="section-num">03</div>
+          <div class="section-titles">
+            <h2 class="section-title">Conversations that <em>moved rooms.</em></h2>
+            <p class="section-lede">
+              Long-form interviews with the people doing the actual work — protocol leads, independent devs, researchers. Sit down, talk for an hour, then let the edit do the work.
+            </p>
+          </div>
+        </header>
+
+        <!-- Featured trailer -->
+        <div class="featured-wrap">
+          <div class="video-embed">
+            <iframe
+              src={`https://www.youtube.com/embed/${featured.id}`}
+              title={`${featured.subject} — ${featured.context}`}
+              loading="lazy"
+              frameborder="0"
+              allow="picture-in-picture; encrypted-media"
+              allowfullscreen
+            ></iframe>
+          </div>
+          <div class="featured-caption">
+            <span class="featured-label">Featured conversation</span>
+            <h3 class="featured-subject">{featured.subject}</h3>
+            <p class="featured-context">{featured.context}</p>
+          </div>
+        </div>
+
+        <!-- Horizontal scroll-snap rail -->
+        <div class="trailer-rail" role="list">
+          {rail.map(c => (
+            <a
+              href={`https://youtu.be/${c.id}`}
+              target="_blank"
+              rel="noopener"
+              class="trailer-item"
+              role="listitem"
+            >
+              <div class="trailer-thumb">
+                <img
+                  src={`https://i.ytimg.com/vi/${c.id}/mqdefault.jpg`}
+                  alt={`${c.subject} — ${c.context}`}
+                  loading="lazy"
+                />
+                <span class="trailer-play" aria-hidden="true">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                </span>
+              </div>
+              <div class="trailer-meta">
+                <div class="trailer-subject">{c.subject}</div>
+                <div class="trailer-context">{c.context}</div>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer / Contact -->
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <div class="footer-left">
+          <div class="footer-mark">0x<span>tim</span>.eth</div>
+          <div class="footer-tag">Distribution · narrative · the long tail of trust.</div>
+        </div>
+        <nav class="footer-social" aria-label="Social">
+          <a href="https://x.com/haochizzle" target="_blank" rel="noopener">X (@haochizzle)</a>
+          <a href="https://youtube.com/@90secondscrypto" target="_blank" rel="noopener">YouTube</a>
+          <a href="https://github.com/0xtim" target="_blank" rel="noopener">GitHub (@0xtim)</a>
+          <a href="mailto:tim@tim-hch.com">Email</a>
+          <a href="https://t.me/haochizzle" target="_blank" rel="noopener">Telegram</a>
+        </nav>
+      </div>
+    </footer>
+
+  </main>
+</Base>
+
+<style>
+  /* Local palette (cream editorial) */
+  :root {
+    --bg: #f6f3ec;
+    --bg-deep: #ede8dc;
+    --ink: #1a1814;
+    --soft: #4a4640;
+    --faint: #8a857c;
+    --line: #d8d2c2;
+    --accent: #c2410c;
+    --accent-soft: #fed7aa;
+    --max-w: 1120px;
+    --serif: 'Fraunces', 'Times New Roman', Georgia, serif;
+    --sans: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+  }
+
+  /* Page-level resets */
+  body {
+    background: var(--bg);
+    color: var(--ink);
+  }
+
+  .container {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding: 0 28px;
+  }
+
+  .skip-link {
+    position: absolute;
+    left: -9999px;
+  }
+  .skip-link:focus {
+    left: 16px;
+    top: 16px;
+    background: var(--ink);
+    color: var(--bg);
+    padding: 8px 12px;
+    border-radius: 4px;
+    z-index: 100;
+  }
+
+  /* Top-right fixed nav */
+  .top-nav {
+    position: fixed;
+    top: 20px;
+    right: 24px;
+    z-index: 50;
+    display: flex;
+    gap: 24px;
+    align-items: center;
+  }
+  .top-nav-link {
+    font-family: var(--sans);
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--soft);
+    letter-spacing: 0.01em;
+    transition: color 0.15s ease;
+  }
+  .top-nav-link:hover { color: var(--accent); }
+  @media (max-width: 720px) {
+    .top-nav { top: 14px; right: 16px; gap: 16px; }
+    .top-nav-link { font-size: 0.8rem; }
+  }
+
+  /* =================== HERO =================== */
+  .hero {
+    padding: 140px 0 96px;
+    border-bottom: 1px solid var(--line);
+  }
+  .hero-inner { max-width: 880px; }
+
+  .hero-label {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--faint);
+    margin-bottom: 32px;
+  }
+  .hero-title {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(2.6rem, 7vw, 5.25rem);
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+    margin: 0 0 36px;
+    max-width: 14ch;
+  }
+  .hero-title em {
+    font-style: italic;
+    color: var(--accent);
+    font-weight: 500;
+  }
+  .hero-lede {
+    font-family: var(--sans);
+    font-size: 1.1875rem;
+    line-height: 1.55;
+    color: var(--soft);
+    max-width: 56ch;
+    margin: 0 0 56px;
+  }
+
+  .meta-row {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 32px;
+    padding-top: 28px;
+    border-top: 1px solid var(--line);
+    max-width: 720px;
+  }
+  .meta-cell dt {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--faint);
+    margin-bottom: 8px;
+  }
+  .meta-cell dd {
+    font-family: var(--sans);
+    font-size: 0.95rem;
+    color: var(--ink);
+    font-weight: 500;
+    margin: 0;
+  }
+  @media (max-width: 720px) {
+    .hero { padding: 110px 0 64px; }
+    .meta-row { grid-template-columns: 1fr; gap: 20px; }
+  }
+
+  /* =================== SECTION HEADER (shared) =================== */
+  .section {
+    padding: 112px 0;
+  }
+  .section-alt {
+    background: var(--bg-deep);
+  }
+  .section-head {
+    display: grid;
+    grid-template-columns: 88px 1fr;
+    gap: 32px;
+    align-items: start;
+    margin-bottom: 72px;
+  }
+  .section-num {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.18em;
+    color: var(--faint);
+    padding-top: 14px;
+    border-top: 1px solid var(--line);
+  }
+  .section-title {
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: clamp(2rem, 4.5vw, 3.25rem);
+    line-height: 0.98;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+    margin: 0 0 20px;
+    max-width: 18ch;
+  }
+  .section-title em {
+    font-style: italic;
+    color: var(--accent);
+    font-weight: 500;
+  }
+  .section-lede {
+    font-family: var(--sans);
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    color: var(--soft);
+    max-width: 56ch;
+    margin: 0;
+  }
+  @media (max-width: 720px) {
+    .section { padding: 80px 0; }
+    .section-head { grid-template-columns: 1fr; gap: 16px; margin-bottom: 48px; }
+    .section-num { padding-top: 10px; }
+  }
+
+  /* =================== 01 / DISTRIBUTION =================== */
+  .dist-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    align-items: stretch;
+  }
+  .dist-card {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: border-color 0.2s ease, transform 0.2s ease;
+  }
+  .dist-card:hover {
+    border-color: var(--ink);
+    transform: translateY(-2px);
+  }
+  .dist-card-featured {
+    grid-row: span 2;
+    background: var(--ink);
+    border-color: var(--ink);
+    color: var(--bg);
+  }
+  .dist-card-featured:hover { border-color: var(--accent); }
+  .dist-card-featured .dist-card-meta,
+  .dist-card-featured .dist-card-title,
+  .dist-card-featured .dist-card-line,
+  .dist-card-featured .dist-card-cta { color: inherit; }
+  .dist-card-featured .dist-card-cta { color: var(--accent-soft); }
+  .dist-card-featured .dist-card-cta:hover { color: #fff; }
+  .dist-card-featured .dist-card-pub,
+  .dist-card-featured .dist-card-views { color: rgba(246, 243, 236, 0.6); }
+
+  .dist-card-thumb {
+    aspect-ratio: 16 / 9;
+    position: relative;
+    overflow: hidden;
+  }
+  .dist-thumb-gradient {
+    width: 100%;
+    height: 100%;
+    background:
+      radial-gradient(circle at 30% 30%, rgba(254, 215, 170, 0.35) 0%, transparent 55%),
+      linear-gradient(135deg, #1a1814 0%, #c2410c 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .dist-thumb-solid {
+    width: 100%;
+    height: 100%;
+    background: var(--bg-deep);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid var(--line);
+  }
+  .dist-thumb-mark {
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: 2.5rem;
+    letter-spacing: -0.04em;
+    color: var(--soft);
+    opacity: 0.55;
+  }
+  .dist-thumb-gradient .dist-thumb-mark {
+    color: var(--accent-soft);
+    opacity: 1;
+    text-shadow: 0 2px 24px rgba(0, 0, 0, 0.4);
+  }
+
+  .dist-card-body {
+    padding: 24px 24px 28px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+  .dist-card-meta {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--faint);
+    margin-bottom: 14px;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+  .dist-card-dot { color: var(--line); }
+  .dist-card-featured .dist-card-dot { color: rgba(246, 243, 236, 0.3); }
+
+  .dist-card-title {
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: 1.75rem;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin: 0 0 14px;
+  }
+  .dist-card-featured .dist-card-title { font-size: 2.25rem; }
+
+  .dist-card-line {
+    font-family: var(--sans);
+    font-size: 0.98rem;
+    line-height: 1.5;
+    color: var(--soft);
+    margin: 0 0 24px;
+    flex: 1;
+  }
+  .dist-card-featured .dist-card-line { font-size: 1.0625rem; color: rgba(246, 243, 236, 0.78); }
+
+  .dist-card-cta {
+    font-family: var(--sans);
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: var(--accent);
+    text-decoration: none;
+    letter-spacing: 0.01em;
+    display: inline-flex;
+    gap: 8px;
+    align-items: center;
+    transition: color 0.15s ease, gap 0.15s ease;
+  }
+  .dist-card-cta:hover { gap: 12px; color: var(--ink); }
+  .dist-card-featured .dist-card-cta:hover { color: #fff; }
+
+  @media (max-width: 860px) {
+    .dist-grid { grid-template-columns: 1fr; gap: 20px; }
+    .dist-card-featured { grid-row: auto; }
+  }
+
+  /* =================== 02 / WRITING =================== */
+  .writing-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .writing-item {
+    border-top: 1px solid var(--line);
+  }
+  .writing-item:last-child {
+    border-bottom: 1px solid var(--line);
+  }
+  .writing-link {
+    display: grid;
+    grid-template-columns: 220px 1fr 32px;
+    gap: 32px;
+    padding: 36px 0;
+    align-items: start;
+    text-decoration: none;
+    color: inherit;
+    transition: padding 0.2s ease;
+  }
+  .writing-link:hover { padding-left: 12px; }
+  .writing-link:hover .writing-arrow { transform: translateX(4px); color: var(--accent); }
+  .writing-link:hover .writing-title { color: var(--accent); }
+
+  .writing-pub {
+    font-family: var(--mono);
+    font-size: 0.74rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--faint);
+    padding-top: 6px;
+  }
+  .writing-main { min-width: 0; }
+  .writing-title {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 1.6rem;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin: 0 0 10px;
+    transition: color 0.15s ease;
+  }
+  .writing-blurb {
+    font-family: var(--sans);
+    font-size: 0.98rem;
+    line-height: 1.55;
+    color: var(--soft);
+    margin: 0;
+    max-width: 58ch;
+  }
+  .writing-arrow {
+    font-family: var(--sans);
+    font-size: 1.1rem;
+    color: var(--faint);
+    padding-top: 6px;
+    transition: transform 0.2s ease, color 0.2s ease;
+  }
+  @media (max-width: 720px) {
+    .writing-link {
+      grid-template-columns: 1fr;
+      gap: 12px;
+      padding: 28px 0;
+    }
+    .writing-arrow { display: none; }
+  }
+
+  /* =================== 03 / NETWORK (CONVERSATIONS) =================== */
+  .featured-wrap {
+    margin-bottom: 56px;
+  }
+  .video-embed {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%;
+    background: var(--ink);
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid var(--line);
+  }
+  .video-embed iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+  .featured-caption {
+    margin-top: 20px;
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+  .featured-label {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  .featured-subject {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 1.5rem;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin: 0;
+  }
+  .featured-context {
+    font-family: var(--sans);
+    font-size: 0.95rem;
+    color: var(--soft);
+    margin: 0;
+  }
+
+  .trailer-rail {
+    display: flex;
+    gap: 16px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding: 4px 4px 16px;
+    margin: 0 -28px;
+    padding-left: 28px;
+    padding-right: 28px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--line) transparent;
+  }
+  .trailer-rail::-webkit-scrollbar { height: 6px; }
+  .trailer-rail::-webkit-scrollbar-track { background: transparent; }
+  .trailer-rail::-webkit-scrollbar-thumb { background: var(--line); border-radius: 3px; }
+
+  .trailer-item {
+    flex: 0 0 280px;
+    scroll-snap-align: start;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.2s ease, transform 0.2s ease;
+    display: flex;
+    flex-direction: column;
+  }
+  .trailer-item:hover {
+    border-color: var(--ink);
+    transform: translateY(-2px);
+  }
+  .trailer-item:hover .trailer-subject { color: var(--accent); }
+
+  .trailer-thumb {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    background: var(--bg-deep);
+    overflow: hidden;
+  }
+  .trailer-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .trailer-play {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(26, 24, 20, 0.0);
+    color: var(--bg);
+    transition: background 0.2s ease;
+  }
+  .trailer-play svg {
+    background: var(--accent);
+    border-radius: 50%;
+    padding: 8px;
+    width: 36px;
+    height: 36px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
+  }
+  .trailer-item:hover .trailer-play { background: rgba(26, 24, 20, 0.18); }
+
+  .trailer-meta {
+    padding: 16px 18px 18px;
+  }
+  .trailer-subject {
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: 1.15rem;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    margin: 0 0 4px;
+    transition: color 0.15s ease;
+  }
+  .trailer-context {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--faint);
+  }
+  @media (max-width: 720px) {
+    .trailer-item { flex: 0 0 240px; }
+  }
+
+  /* =================== FOOTER =================== */
+  .site-footer {
+    padding: 64px 0 48px;
+    border-top: 1px solid var(--line);
+    background: var(--bg);
+  }
+  .footer-inner {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 40px;
+    align-items: end;
+  }
+  .footer-mark {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 1.5rem;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+  .footer-mark span { color: var(--accent); font-style: italic; }
+  .footer-tag {
+    font-family: var(--sans);
+    font-size: 0.95rem;
+    color: var(--soft);
+    max-width: 36ch;
+  }
+  .footer-social {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px 24px;
+    justify-content: flex-end;
+  }
+  .footer-social a {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--soft);
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+  .footer-social a:hover { color: var(--accent); }
+  @media (max-width: 720px) {
+    .footer-inner { grid-template-columns: 1fr; gap: 32px; }
+    .footer-social { justify-content: flex-start; }
+  }
+</style>

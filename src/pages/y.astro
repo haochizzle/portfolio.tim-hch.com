@@ -1,0 +1,1016 @@
+---
+import Base from '../layouts/Base.astro';
+
+// Distribution videos — real IDs from YouTube API (2026-06-26)
+const distributionVideos = [
+  {
+    id: 'dHiHR9jeuF8',
+    title: 'Chainlink',
+    views: '4.1K',
+    desc: 'Meet the slept King of blockchains — long-form deep-dive on the oracle network that quietly holds the on-chain economy together.',
+    featured: true,
+  },
+  {
+    id: 'Gu4y0SZNmoU',
+    title: 'Fileverse',
+    views: '5.4K',
+    desc: 'Why Fileverse is the Google Docs killer — self-custody storage that actually performs in production.',
+    featured: false,
+  },
+  {
+    id: 'HgXoI4jad-g',
+    title: 'Keycard Shell',
+    views: '330',
+    desc: 'The ugliest crypto wallet — a hardware wallet review for the audience that cares about the engineering.',
+    featured: false,
+  },
+];
+
+const writing = [
+  {
+    title: 'Introducing the Privacy Engineering Team',
+    pub: 'CHAINSAFE SYSTEMS · MEDIUM',
+    url: 'https://medium.com/chainsafe-systems/introducing-the-privacy-engineering-team-dcf45511b286',
+  },
+  {
+    title: 'Forget the Money & Hype',
+    pub: 'THE CAPITAL · MEDIUM',
+    url: 'https://medium.com/thecapital/forget-the-money-and-hype-this-is-the-reason-why-blockchains-will-define-our-future-e9184b375c31',
+  },
+  {
+    title: 'Children of Orchid',
+    pub: 'PERSONAL · MEDIUM',
+    url: 'https://tim-hch.medium.com/children-of-orchid-2b2f900e6e9b',
+  },
+];
+
+// Conversations — Jimmy is featured (large iframe), the rest are in a scroll-snap row
+const featuredInterview = {
+  id: 'OvMEl4L-0bY',
+  subject: 'Jimmy',
+  context: 'Independent dev',
+};
+
+const interviewTrailers = [
+  { id: 'SHXgT17J874', subject: 'Timofey', context: 'ChainSafe' },
+  { id: '8qhMECRarpE', subject: 'zy0n', context: 'Railgun' },
+  { id: 'p-cKWfAj6nI', subject: 'Oskar', context: 'Ethereum Foundation · IPTF' },
+  { id: 'N7i1wAnGOpI', subject: 'Alan Scott', context: 'Railgun' },
+  { id: '6KaxUw5YZe0', subject: 'Chris Blake', context: 'Independent researcher' },
+  { id: '2uwr6wk29lg', subject: 'Phil Ngo', context: 'Ethereum · Lodestar' },
+];
+
+const sections = [
+  { id: 'intro', num: '00', label: 'Intro' },
+  { id: 'distribution', num: '01', label: 'Distribution' },
+  { id: 'writing', num: '02', label: 'Writing' },
+  { id: 'network', num: '03', label: 'Network' },
+];
+---
+
+<Base
+  title="Tim Ho — 0xtim.eth"
+  description="Distribution, writing, and conversations."
+>
+  <div class="y-page">
+    <!-- Top-right fixed nav -->
+    <nav class="y-topnav" aria-label="Primary">
+      <a href="/cv.pdf" class="y-topnav-link" download>Resume</a>
+      <a href="mailto:tim@tim-hch.com" class="y-topnav-link">Contact</a>
+    </nav>
+
+    <div class="y-shell">
+      <!-- Sticky left rail -->
+      <aside class="y-rail" aria-label="Section navigation">
+        <div class="y-rail-inner">
+          <a href="#intro" class="y-rail-name">
+            Tim <em>Ha</em>
+          </a>
+          <ul class="y-rail-list" role="list">
+            {sections.map(s => (
+              <li>
+                <a href={`#${s.id}`} class="y-rail-link" data-section={s.id} aria-current="false">
+                  <span class="y-rail-num">{s.num}</span>
+                  <span class="y-rail-label">{s.label}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+          <div class="y-rail-foot">
+            <a href="https://x.com/haochizzle" target="_blank" rel="noopener" aria-label="X">X</a>
+            <span class="y-rail-dot">·</span>
+            <a href="https://t.me/haochizzle" target="_blank" rel="noopener" aria-label="Telegram">TG</a>
+            <span class="y-rail-dot">·</span>
+            <a href="https://youtube.com/@90secondscrypto" target="_blank" rel="noopener" aria-label="YouTube">YT</a>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Mobile pill bar (replaces rail at ≤768px) -->
+      <nav class="y-mobile-pills" aria-label="Section navigation">
+        <ul class="y-mobile-pills-list" role="list">
+          {sections.map(s => (
+            <li>
+              <a href={`#${s.id}`} class="y-mobile-pill" data-section={s.id} aria-current="false">
+                <span class="y-mobile-pill-num">{s.num}</span>
+                <span>{s.label}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+
+      <!-- Main content -->
+      <main class="y-main">
+        <!-- 00 / Intro -->
+        <section id="intro" class="y-section y-hero">
+          <div class="y-hero-inner">
+            <div class="y-hero-eyebrow">
+              <span class="y-mono">00 / INTRO</span>
+            </div>
+            <h1 class="y-h1">
+              Distribution,<br/>
+              <em>writing</em>,<br/>
+              and <span class="y-italic-accent">conversations</span> about the systems behind the work.
+            </h1>
+            <p class="y-hero-body">
+              First at ChainSafe, now full-time on 90 Seconds to Crypto. I make videos, write essays, and sit down with the people actually shipping. This is the work, in order of how it moved rooms.
+            </p>
+            <div class="y-hero-actions">
+              <a href="#distribution" class="y-btn y-btn-primary">See the work →</a>
+              <a href="https://x.com/haochizzle" target="_blank" rel="noopener" class="y-btn y-btn-ghost">Follow on X</a>
+            </div>
+          </div>
+        </section>
+
+        <!-- 01 / Distribution -->
+        <section id="distribution" class="y-section">
+          <header class="y-section-header">
+            <div class="y-section-eyebrow"><span class="y-mono">01 / DISTRIBUTION</span></div>
+            <h2 class="y-h2">Distribution.</h2>
+            <p class="y-section-intro">
+              Three explainers that pulled real numbers — measured in YouTube views, not vibes.
+            </p>
+          </header>
+
+          <div class="y-video-grid">
+            {distributionVideos.map(v => (
+              <a href={`https://youtu.be/${v.id}`} target="_blank" rel="noopener" class={`y-video-card ${v.featured ? 'y-video-card--featured' : ''}`}>
+                <div class="y-video-thumb">
+                  <img src={`https://i.ytimg.com/vi/${v.id}/maxresdefault.jpg`} alt={v.title} loading="lazy" />
+                  <div class="y-video-play">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                  </div>
+                </div>
+                <div class="y-video-meta">
+                  <div class="y-video-title-row">
+                    <h3 class="y-video-title">{v.title}</h3>
+                    <span class="y-mono y-views">{v.views} views</span>
+                  </div>
+                  <p class="y-video-desc">{v.desc}</p>
+                </div>
+              </a>
+            ))}
+          </div>
+        </section>
+
+        <!-- 02 / Writing -->
+        <section id="writing" class="y-section">
+          <header class="y-section-header">
+            <div class="y-section-eyebrow"><span class="y-mono">02 / WRITING</span></div>
+            <h2 class="y-h2">Writing.</h2>
+            <p class="y-section-intro">
+              Essays on privacy, sovereignty, and what blockchains are actually for.
+            </p>
+          </header>
+
+          <ul class="y-writing-list" role="list">
+            {writing.map(w => (
+              <li class="y-writing-row">
+                <a href={w.url} target="_blank" rel="noopener" class="y-writing-link">
+                  <span class="y-mono y-writing-pub">{w.pub}</span>
+                  <span class="y-writing-title">{w.title}</span>
+                  <span class="y-writing-arrow" aria-hidden="true">→</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        <!-- 03 / Network (Conversations) -->
+        <section id="network" class="y-section">
+          <header class="y-section-header">
+            <div class="y-section-eyebrow"><span class="y-mono">03 / NETWORK</span></div>
+            <h2 class="y-h2">Conversations.</h2>
+            <p class="y-section-intro y-section-intro--accent">
+              Interviews that moved rooms.
+            </p>
+          </header>
+
+          <div class="y-featured-trailer">
+            <div class="y-trailer-frame">
+              <iframe
+                src={`https://www.youtube.com/embed/${featuredInterview.id}`}
+                title={`${featuredInterview.subject} — ${featuredInterview.context}`}
+                frameborder="0"
+                allow="accelerometer; encrypted-media; picture-in-picture"
+                allowfullscreen
+                loading="lazy"
+              ></iframe>
+            </div>
+            <div class="y-trailer-caption">
+              <span class="y-trailer-name">{featuredInterview.subject}</span>
+              <span class="y-trailer-context">{featuredInterview.context}</span>
+            </div>
+          </div>
+
+          <div class="y-trailer-row" aria-label="More interviews">
+            <ul class="y-trailer-track" role="list">
+              {interviewTrailers.map(t => (
+                <li class="y-trailer-item">
+                  <a href={`https://youtu.be/${t.id}`} target="_blank" rel="noopener" class="y-trailer-card">
+                    <div class="y-trailer-thumb">
+                      <img src={`https://i.ytimg.com/vi/${t.id}/mqdefault.jpg`} alt={`${t.subject} — ${t.context}`} loading="lazy" />
+                    </div>
+                    <div class="y-trailer-info">
+                      <div class="y-trailer-name">{t.subject}</div>
+                      <div class="y-trailer-context">{t.context}</div>
+                    </div>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="y-footer">
+          <div class="y-footer-inner">
+            <div class="y-footer-name">Tim Ho</div>
+            <nav class="y-footer-links" aria-label="Social">
+              <a href="https://x.com/haochizzle" target="_blank" rel="noopener">X</a>
+              <a href="https://t.me/haochizzle" target="_blank" rel="noopener">Telegram</a>
+              <a href="https://youtube.com/@90secondscrypto" target="_blank" rel="noopener">YouTube</a>
+              <a href="https://github.com/0xtim" target="_blank" rel="noopener">GitHub</a>
+              <a href="mailto:tim@tim-hch.com">tim@tim-hch.com</a>
+            </nav>
+            <div class="y-footer-meta">© 2026 · Portfolio v2</div>
+          </div>
+        </footer>
+      </main>
+    </div>
+  </div>
+</Base>
+
+<script is:inline>
+  (function () {
+    const sectionIds = ['intro', 'distribution', 'writing', 'network'];
+    const links = Array.from(document.querySelectorAll('.y-rail-link, .y-mobile-pill'));
+
+    function setActive(id) {
+      links.forEach(link => {
+        const isActive = link.getAttribute('data-section') === id;
+        link.classList.toggle('active', isActive);
+        if (isActive) {
+          link.setAttribute('aria-current', 'true');
+        } else {
+          link.setAttribute('aria-current', 'false');
+        }
+      });
+    }
+
+    // IntersectionObserver scrollspy
+    const visible = new Map();
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          visible.set(entry.target.id, entry.intersectionRatio);
+        });
+        // pick the section with highest visible ratio, fall back to top-most in viewport
+        let best = null;
+        let bestRatio = 0;
+        for (const [id, ratio] of visible.entries()) {
+          if (ratio > bestRatio) {
+            bestRatio = ratio;
+            best = id;
+          }
+        }
+        if (!best) {
+          // fallback: section whose top is closest to viewport top (above 120px)
+          let fallback = sectionIds[0];
+          for (const id of sectionIds) {
+            const el = document.getElementById(id);
+            if (el && el.getBoundingClientRect().top <= 120) fallback = id;
+          }
+          best = fallback;
+        }
+        if (best) setActive(best);
+      },
+      {
+        rootMargin: '-20% 0px -50% 0px',
+        threshold: [0, 0.1, 0.25, 0.5, 0.75, 1],
+      }
+    );
+
+    sectionIds.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) io.observe(el);
+    });
+
+    // Initial state
+    setActive('intro');
+  })();
+</script>
+
+<style>
+  /* Load fonts first (Astro will keep these as references; if offline, fallbacks take over) */
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  /* ===================================================================
+     Y-PAGE — cream + Fraunces + Inter (light theme, scoped override)
+     All styles scoped under .y-page so we don't disturb Base.astro's
+     global dark theme. Local CSS variables override Base's :root vars.
+     =================================================================== */
+  .y-page {
+    --bg: #f6f3ec;
+    --bg-deep: #ede8dc;
+    --ink: #1a1814;
+    --soft: #4a4640;
+    --faint: #8a857c;
+    --line: #d8d2c2;
+    --accent: #c2410c;
+    --accent-soft: #fed7aa;
+
+    --font-serif: 'Fraunces', 'Times New Roman', Georgia, serif;
+    --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 1.55;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Scoped element resets (don't leak to Base globals) */
+  .y-page *,
+  .y-page *::before,
+  .y-page *::after {
+    box-sizing: border-box;
+  }
+  .y-page h1, .y-page h2, .y-page h3, .y-page h4 {
+    margin: 0;
+    font-weight: 600;
+  }
+  .y-page p { margin: 0; }
+  .y-page a { color: inherit; text-decoration: none; }
+  .y-page button { font: inherit; cursor: pointer; background: none; border: 0; color: inherit; padding: 0; }
+  .y-page img { max-width: 100%; height: auto; display: block; }
+  .y-page ul { list-style: none; padding: 0; margin: 0; }
+
+  /* Mono label helper */
+  .y-mono {
+    font-family: var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: var(--faint);
+  }
+
+  /* Italic accent (Fraunces italic + accent color) */
+  .y-italic-accent {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  /* ========== Top-right fixed nav ========== */
+  .y-topnav {
+    position: fixed;
+    top: 24px;
+    right: 32px;
+    z-index: 50;
+    display: flex;
+    gap: 24px;
+    align-items: center;
+    background: rgba(246, 243, 236, 0.85);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 8px 16px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+  }
+  .y-topnav-link {
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--ink);
+    transition: color 0.15s ease;
+  }
+  .y-topnav-link:hover { color: var(--accent); }
+  @media (max-width: 768px) {
+    .y-topnav { top: 12px; right: 12px; gap: 16px; padding: 6px 12px; }
+  }
+
+  /* ========== Shell: rail + main ========== */
+  .y-shell {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 64px;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 32px 32px 64px 32px;
+  }
+
+  /* ========== Left rail ========== */
+  .y-rail {
+    position: relative;
+  }
+  .y-rail-inner {
+    position: sticky;
+    top: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    padding-top: 80px; /* clears fixed topnav */
+  }
+  .y-rail-name {
+    font-family: var(--font-serif);
+    font-size: 1.5rem;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    color: var(--ink);
+  }
+  .y-rail-name em {
+    font-style: italic;
+    color: var(--accent);
+  }
+  .y-rail-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .y-rail-link {
+    display: grid;
+    grid-template-columns: 28px 1fr;
+    gap: 8px;
+    align-items: baseline;
+    padding: 6px 0;
+    color: var(--faint);
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+    font-weight: 400;
+    transition: color 0.2s ease;
+  }
+  .y-rail-link:hover { color: var(--ink); }
+  .y-rail-num {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    color: var(--faint);
+    transition: color 0.2s ease;
+  }
+  .y-rail-label {
+    font-family: var(--font-serif);
+    font-size: 1.05rem;
+    line-height: 1.2;
+  }
+  .y-rail-link.active {
+    color: var(--ink);
+  }
+  .y-rail-link.active .y-rail-label {
+    font-style: italic;
+    font-weight: 500;
+  }
+  .y-rail-link.active .y-rail-num {
+    color: var(--accent);
+  }
+  .y-rail-foot {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--faint);
+    letter-spacing: 0.05em;
+  }
+  .y-rail-foot a:hover { color: var(--accent); }
+  .y-rail-dot { color: var(--line); }
+
+  /* ========== Mobile pill bar (hidden on desktop) ========== */
+  .y-mobile-pills {
+    display: none;
+  }
+
+  /* ========== Main content ========== */
+  .y-main {
+    min-width: 0; /* prevent grid overflow from iframes */
+  }
+  .y-section {
+    padding: 64px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .y-section:first-of-type {
+    padding-top: 32px;
+  }
+  .y-section:last-of-type {
+    border-bottom: 0;
+  }
+
+  /* Hero */
+  .y-hero {
+    padding-bottom: 96px;
+  }
+  .y-hero-inner {
+    max-width: 760px;
+  }
+  .y-hero-eyebrow {
+    margin-bottom: 32px;
+  }
+  .y-h1 {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    font-size: clamp(2.4rem, 5.5vw, 4.2rem);
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    margin-bottom: 32px;
+    color: var(--ink);
+  }
+  .y-h1 em {
+    font-style: italic;
+    color: var(--accent);
+    font-weight: 500;
+  }
+  .y-hero-body {
+    font-family: var(--font-sans);
+    font-size: 1.125rem;
+    line-height: 1.55;
+    color: var(--soft);
+    max-width: 580px;
+    margin-bottom: 32px;
+  }
+  .y-hero-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .y-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 20px;
+    border-radius: 999px;
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    font-weight: 500;
+    line-height: 1;
+    transition: all 0.18s ease;
+    border: 1px solid transparent;
+  }
+  .y-btn-primary {
+    background: var(--ink);
+    color: var(--bg);
+  }
+  .y-btn-primary:hover {
+    background: var(--accent);
+    color: #fff;
+  }
+  .y-btn-ghost {
+    background: transparent;
+    border-color: var(--line);
+    color: var(--ink);
+  }
+  .y-btn-ghost:hover {
+    border-color: var(--ink);
+  }
+
+  /* Section headers */
+  .y-section-header {
+    margin-bottom: 48px;
+  }
+  .y-section-eyebrow {
+    margin-bottom: 16px;
+  }
+  .y-h2 {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    font-size: clamp(2rem, 4vw, 3rem);
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+    margin-bottom: 16px;
+  }
+  .y-section-intro {
+    font-family: var(--font-sans);
+    font-size: 1.0625rem;
+    line-height: 1.55;
+    color: var(--soft);
+    max-width: 580px;
+  }
+  .y-section-intro--accent {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 500;
+    font-size: 1.5rem;
+    color: var(--accent);
+    max-width: none;
+  }
+
+  /* ========== 01 Distribution ========== */
+  .y-video-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+  .y-video-card {
+    display: flex;
+    flex-direction: column;
+    background: var(--bg-deep);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+  .y-video-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px -16px rgba(26, 24, 20, 0.25);
+  }
+  .y-video-thumb {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    background: #000;
+    overflow: hidden;
+  }
+  .y-video-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .y-video-play {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.25);
+    color: #fff;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+  .y-video-card:hover .y-video-play {
+    opacity: 1;
+  }
+  .y-video-meta {
+    padding: 20px 22px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .y-video-title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+  }
+  .y-video-title {
+    font-family: var(--font-serif);
+    font-size: 1.35rem;
+    font-weight: 500;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+  .y-views {
+    font-size: 0.65rem;
+    white-space: nowrap;
+  }
+  .y-video-desc {
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+    line-height: 1.45;
+    color: var(--soft);
+  }
+  /* Featured video: spans full width, taller */
+  .y-video-card--featured {
+    grid-column: 1 / -1;
+  }
+  .y-video-card--featured .y-video-title {
+    font-size: 1.75rem;
+  }
+  .y-video-card--featured .y-video-desc {
+    font-size: 1.0625rem;
+    max-width: 640px;
+  }
+
+  /* ========== 02 Writing ========== */
+  .y-writing-list {
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid var(--line);
+  }
+  .y-writing-row {
+    border-bottom: 1px solid var(--line);
+  }
+  .y-writing-link {
+    display: grid;
+    grid-template-columns: 240px 1fr 24px;
+    gap: 24px;
+    align-items: baseline;
+    padding: 24px 8px 24px 0;
+    transition: padding 0.18s ease, color 0.18s ease;
+  }
+  .y-writing-link:hover {
+    padding-left: 12px;
+  }
+  .y-writing-link:hover .y-writing-title {
+    color: var(--accent);
+  }
+  .y-writing-link:hover .y-writing-arrow {
+    transform: translateX(4px);
+    color: var(--accent);
+  }
+  .y-writing-pub {
+    color: var(--faint);
+  }
+  .y-writing-title {
+    font-family: var(--font-serif);
+    font-size: 1.25rem;
+    font-weight: 500;
+    line-height: 1.25;
+    color: var(--ink);
+    transition: color 0.18s ease;
+  }
+  .y-writing-arrow {
+    font-size: 1.1rem;
+    color: var(--faint);
+    transition: transform 0.18s ease, color 0.18s ease;
+  }
+
+  /* ========== 03 Network / Conversations ========== */
+  .y-featured-trailer {
+    margin-bottom: 48px;
+  }
+  .y-trailer-frame {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    background: #000;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 16px 48px -24px rgba(26, 24, 20, 0.35);
+  }
+  .y-trailer-frame iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+  .y-trailer-caption {
+    margin-top: 14px;
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+  }
+  .y-trailer-name {
+    font-family: var(--font-serif);
+    font-size: 1.15rem;
+    font-weight: 500;
+    color: var(--ink);
+  }
+  .y-trailer-context {
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    color: var(--soft);
+  }
+
+  /* Horizontal scroll-snap trailer row */
+  .y-trailer-row {
+    margin: 0 -32px;
+    padding: 0 32px;
+  }
+  .y-trailer-track {
+    display: flex;
+    gap: 16px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 4px 4px 16px;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: var(--line) transparent;
+  }
+  .y-trailer-track::-webkit-scrollbar {
+    height: 6px;
+  }
+  .y-trailer-track::-webkit-scrollbar-thumb {
+    background: var(--line);
+    border-radius: 3px;
+  }
+  .y-trailer-item {
+    flex: 0 0 280px;
+    scroll-snap-align: start;
+  }
+  .y-trailer-card {
+    display: flex;
+    flex-direction: column;
+    background: var(--bg-deep);
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.2s ease;
+    height: 100%;
+  }
+  .y-trailer-card:hover {
+    transform: translateY(-2px);
+  }
+  .y-trailer-thumb {
+    aspect-ratio: 16 / 9;
+    background: #000;
+    overflow: hidden;
+    position: relative;
+  }
+  .y-trailer-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .y-trailer-thumb::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.0);
+    transition: background 0.2s ease;
+  }
+  .y-trailer-card:hover .y-trailer-thumb::after {
+    background: rgba(0,0,0,0.15);
+  }
+  .y-trailer-info {
+    padding: 14px 16px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .y-trailer-name {
+    /* also used above for caption; this scope is for the cards */
+  }
+
+  /* ========== Footer ========== */
+  .y-footer {
+    margin-top: 64px;
+    padding-top: 48px;
+    border-top: 1px solid var(--line);
+  }
+  .y-footer-inner {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 24px;
+    align-items: center;
+  }
+  .y-footer-name {
+    font-family: var(--font-serif);
+    font-size: 1.25rem;
+    font-weight: 500;
+    font-style: italic;
+    color: var(--accent);
+  }
+  .y-footer-links {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .y-footer-links a {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--soft);
+    transition: color 0.15s ease;
+  }
+  .y-footer-links a:hover { color: var(--accent); }
+  .y-footer-meta {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--faint);
+    text-align: right;
+  }
+
+  /* ========== Responsive: tablet (≤1024px) ========== */
+  @media (max-width: 1024px) {
+    .y-shell {
+      grid-template-columns: 180px 1fr;
+      gap: 40px;
+      padding: 24px 24px 48px;
+    }
+    .y-writing-link {
+      grid-template-columns: 180px 1fr 24px;
+    }
+  }
+
+  /* ========== Responsive: mobile (≤768px) ========== */
+  @media (max-width: 768px) {
+    .y-shell {
+      grid-template-columns: 1fr;
+      gap: 0;
+      padding: 16px 16px 48px;
+    }
+    .y-rail { display: none; }
+    .y-mobile-pills {
+      display: block;
+      position: sticky;
+      top: 56px;
+      z-index: 40;
+      margin: 0 -16px 32px;
+      padding: 8px 16px;
+      background: rgba(246, 243, 236, 0.92);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--line);
+    }
+    .y-mobile-pills-list {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      overflow-y: hidden;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      padding: 4px 4px 8px;
+      scrollbar-width: none;
+    }
+    .y-mobile-pills-list::-webkit-scrollbar { display: none; }
+    .y-mobile-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      flex: 0 0 auto;
+      scroll-snap-align: start;
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: var(--bg);
+      font-family: var(--font-serif);
+      font-size: 0.95rem;
+      color: var(--soft);
+      transition: all 0.18s ease;
+      white-space: nowrap;
+    }
+    .y-mobile-pill:hover {
+      border-color: var(--ink);
+      color: var(--ink);
+    }
+    .y-mobile-pill.active {
+      background: var(--ink);
+      color: var(--bg);
+      border-color: var(--ink);
+      font-style: italic;
+    }
+    .y-mobile-pill.active .y-mobile-pill-num {
+      color: var(--accent-soft);
+    }
+    .y-mobile-pill-num {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      color: var(--faint);
+      transition: color 0.18s ease;
+    }
+
+    .y-section { padding: 48px 0; }
+    .y-hero { padding-top: 16px; padding-bottom: 64px; }
+    .y-section-header { margin-bottom: 32px; }
+    .y-video-grid {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .y-video-card--featured { grid-column: 1; }
+    .y-video-card--featured .y-video-title { font-size: 1.4rem; }
+    .y-writing-link {
+      grid-template-columns: 1fr;
+      gap: 6px;
+      padding: 18px 0;
+    }
+    .y-writing-link:hover { padding-left: 8px; }
+    .y-writing-arrow { display: none; }
+    .y-trailer-row {
+      margin: 0 -16px;
+      padding: 0 16px;
+    }
+    .y-trailer-item { flex: 0 0 240px; }
+    .y-footer-inner {
+      grid-template-columns: 1fr;
+      gap: 16px;
+      text-align: left;
+    }
+    .y-footer-meta { text-align: left; }
+  }
+</style>

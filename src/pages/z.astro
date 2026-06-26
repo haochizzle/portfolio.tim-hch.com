@@ -1,0 +1,854 @@
+---
+import Base from '../layouts/Base.astro';
+
+// Distribution — real IDs from YouTube API (2026-06-26). Channel @90secondstocrypto.
+const distribution = [
+  {
+    id: 'dHiHR9jeuF8',
+    title: 'Chainlink',
+    metric: '4.1K views',
+    desc: 'Meet the slept King of blockchains — long-form deep-dive on the oracle network that quietly holds the on-chain economy together.',
+    featured: true,
+  },
+  {
+    id: 'Gu4y0SZNmoU',
+    title: 'Fileverse',
+    metric: '5.4K views',
+    desc: 'Why Fileverse is the Google Docs killer — self-custody storage that actually performs in production.',
+    featured: false,
+  },
+  {
+    id: 'HgXoI4jad-g',
+    title: 'Keycard Shell',
+    metric: '330 views',
+    desc: 'The ugliest crypto wallet — a hardware wallet review for the audience that cares about the engineering.',
+    featured: false,
+  },
+];
+
+const writing = [
+  {
+    url: 'https://medium.com/chainsafe-systems/introducing-the-privacy-engineering-team-dcf45511b286',
+    title: 'Introducing the Privacy Engineering Team',
+    pub: 'ChainSafe Systems · Medium',
+  },
+  {
+    url: 'https://medium.com/thecapital/forget-the-money-and-hype-this-is-the-reason-why-blockchains-will-define-our-future-e9184b375c31',
+    title: 'Forget the Money & Hype',
+    pub: 'The Capital · Medium',
+  },
+  {
+    url: 'https://tim-hch.medium.com/children-of-orchid-2b2f900e6e9b',
+    title: 'Children of Orchid',
+    pub: 'Personal · Medium',
+  },
+];
+
+const interviews = [
+  { id: 'OvMEl4L-0bY', subject: 'Jimmy', context: 'Independent dev', featured: true },
+  { id: 'SHXgT17J874', subject: 'Timofey', context: 'ChainSafe', featured: false },
+  { id: '8qhMECRarpE', subject: 'zy0n', context: 'Railgun', featured: false },
+  { id: 'p-cKWfAj6nI', subject: 'Oskar', context: 'Ethereum Foundation · IPTF', featured: false },
+  { id: 'N7i1wAnGOpI', subject: 'Alan Scott', context: 'Railgun', featured: false },
+  { id: '6KaxUw5YZe0', subject: 'Chris Blake', context: 'Independent researcher', featured: false },
+  { id: '2uwr6wk29lg', subject: 'Phil Ngo', context: 'Ethereum · Lodestar', featured: false },
+];
+
+const featuredInterview = interviews.find((i) => i.featured)!;
+const railInterviews = interviews.filter((i) => !i.featured);
+---
+
+<Base
+  title="Tim Ho — 0xtim.eth"
+  description="Distribution, writing, and conversations from inside the systems that build blockchains."
+>
+  <div class="z-shell">
+    <!-- Top-right nav (fixed) -->
+    <nav class="z-topnav" aria-label="Site links">
+      <a href="/cv.pdf" download>Resume</a>
+      <a href="mailto:tim@tim-hch.com">Contact</a>
+    </nav>
+
+    <!-- HERO -->
+    <header class="z-hero">
+      <div class="z-container">
+        <h1 class="z-h1">
+          Building the systems <em>behind</em> the work — first at ChainSafe, now on 90 Seconds to Crypto.
+        </h1>
+        <p class="z-lede">
+          A working portfolio. Pick a lane — <em>distribution</em>, <em>writing</em>, or <em>conversations</em>. The tabs below are the three things I keep doing, in that order.
+        </p>
+      </div>
+    </header>
+
+    <!-- TAB BAR -->
+    <div class="z-tabbar-wrap">
+      <div class="z-container">
+        <div
+          class="z-tabbar"
+          role="tablist"
+          aria-label="Portfolio sections"
+        >
+          <button
+            class="z-tab is-active"
+            role="tab"
+            id="tab-distribution"
+            aria-selected="true"
+            aria-controls="panel-distribution"
+            data-target="distribution"
+          >
+            <span class="z-tab-num">01</span>
+            <span class="z-tab-label"><em>Distribution</em></span>
+          </button>
+          <button
+            class="z-tab"
+            role="tab"
+            id="tab-writing"
+            aria-selected="false"
+            aria-controls="panel-writing"
+            data-target="writing"
+            tabindex="-1"
+          >
+            <span class="z-tab-num">02</span>
+            <span class="z-tab-label"><em>Writing</em></span>
+          </button>
+          <button
+            class="z-tab"
+            role="tab"
+            id="tab-network"
+            aria-selected="false"
+            aria-controls="panel-network"
+            data-target="network"
+            tabindex="-1"
+          >
+            <span class="z-tab-num">03</span>
+            <span class="z-tab-label"><em>Conversations</em></span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PANELS -->
+    <main class="z-panels">
+      <!-- DISTRIBUTION -->
+      <section
+        class="z-panel is-active"
+        id="panel-distribution"
+        role="tabpanel"
+        aria-labelledby="tab-distribution"
+        data-panel="distribution"
+      >
+        <div class="z-container">
+          <p class="z-panel-intro">
+            Three pieces of video distribution that did what they were supposed to do. Views are YouTube lifetime, not impressions — and not Twitter.
+          </p>
+          <div class="z-distro-grid">
+            {distribution.map((v) => (
+              <a
+                href={`https://youtu.be/${v.id}`}
+                target="_blank"
+                rel="noopener"
+                class={`z-card ${v.featured ? 'is-featured' : ''}`}
+              >
+                <div class="z-card-thumb">
+                  <img
+                    src={`https://i.ytimg.com/vi/${v.id}/maxresdefault.jpg`}
+                    alt={v.title}
+                    loading="lazy"
+                  />
+                  <div class="z-card-play" aria-hidden="true">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M8 5v14l11-7z" />
+                    </svg>
+                  </div>
+                </div>
+                <div class="z-card-body">
+                  <div class="z-card-row">
+                    <span class="z-mono">{v.metric} views</span>
+                    {v.featured && <span class="z-mono z-mono-accent">Featured</span>}
+                  </div>
+                  <div class="z-card-title">{v.title}</div>
+                  <div class="z-card-desc">{v.desc}</div>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <!-- WRITING -->
+      <section
+        class="z-panel"
+        id="panel-writing"
+        role="tabpanel"
+        aria-labelledby="tab-writing"
+        data-panel="writing"
+        hidden
+      >
+        <div class="z-container">
+          <p class="z-panel-intro">
+            Three essays. Two bylines, one personal. Each one written because the topic still felt under-explained.
+          </p>
+          <ul class="z-writing-list">
+            {writing.map((w) => (
+              <li>
+                <a
+                  href={w.url}
+                  target="_blank"
+                  rel="noopener"
+                  class="z-writing-row"
+                >
+                  <span class="z-writing-pub">{w.pub}</span>
+                  <span class="z-writing-title">{w.title}</span>
+                  <span class="z-writing-arrow" aria-hidden="true">→</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      <!-- NETWORK / CONVERSATIONS -->
+      <section
+        class="z-panel"
+        id="panel-network"
+        role="tabpanel"
+        aria-labelledby="tab-network"
+        data-panel="network"
+        hidden
+      >
+        <div class="z-container">
+          <p class="z-panel-intro">
+            Long-form talks with the people doing the work. One featured, six more on the rail.
+          </p>
+
+          <div class="z-conv-featured">
+            <div class="z-conv-frame">
+              <iframe
+                src={`https://www.youtube.com/embed/${featuredInterview.id}?rel=0`}
+                title={`${featuredInterview.subject} — ${featuredInterview.context}`}
+                loading="lazy"
+                frameborder="0"
+                allow="picture-in-picture; encrypted-media"
+                allowfullscreen
+              ></iframe>
+            </div>
+            <div class="z-conv-caption">
+              <div class="z-mono">Featured conversation</div>
+              <div class="z-conv-title">
+                {featuredInterview.subject} <em>— {featuredInterview.context}</em>
+              </div>
+            </div>
+          </div>
+
+          <div class="z-conv-rail" role="list">
+            {railInterviews.map((c) => (
+              <a
+                href={`https://youtu.be/${c.id}`}
+                target="_blank"
+                rel="noopener"
+                class="z-conv-rail-item"
+                role="listitem"
+              >
+                <div class="z-conv-rail-thumb">
+                  <img
+                    src={`https://i.ytimg.com/vi/${c.id}/mqdefault.jpg`}
+                    alt={`${c.subject} — ${c.context}`}
+                    loading="lazy"
+                  />
+                </div>
+                <div class="z-conv-rail-meta">
+                  <div class="z-conv-rail-subject">{c.subject}</div>
+                  <div class="z-conv-rail-context">{c.context}</div>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="z-footer">
+      <div class="z-container z-footer-inner">
+        <div class="z-footer-mark">Tim Ho · 0xtim.eth</div>
+        <nav class="z-footer-nav" aria-label="Social links">
+          <a href="https://youtube.com/@90secondscrypto" target="_blank" rel="noopener">YouTube</a>
+          <a href="https://x.com/haochizzle" target="_blank" rel="noopener">X</a>
+          <a href="https://github.com/0xtim" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://t.me/haochizzle" target="_blank" rel="noopener">Telegram</a>
+          <a href="mailto:tim@tim-hch.com">Email</a>
+        </nav>
+      </div>
+    </footer>
+  </div>
+</Base>
+
+<script is:inline>
+  (function () {
+    const tabs = Array.from(document.querySelectorAll('.z-tab'));
+    const panels = Array.from(document.querySelectorAll('.z-panel'));
+
+    function activate(target, opts) {
+      opts = opts || {};
+      let matched = false;
+      tabs.forEach((tab) => {
+        const isMatch = tab.dataset.target === target;
+        tab.classList.toggle('is-active', isMatch);
+        tab.setAttribute('aria-selected', isMatch ? 'true' : 'false');
+        tab.setAttribute('tabindex', isMatch ? '0' : '-1');
+        if (isMatch) matched = true;
+      });
+      panels.forEach((panel) => {
+        const isMatch = panel.dataset.panel === target;
+        panel.classList.toggle('is-active', isMatch);
+        if (isMatch) {
+          panel.removeAttribute('hidden');
+        } else {
+          panel.setAttribute('hidden', '');
+        }
+      });
+      if (matched && !opts.skipHash) {
+        const newHash = '#' + target;
+        if (location.hash !== newHash) {
+          history.pushState({ tab: target }, '', newHash);
+        }
+      }
+    }
+
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', () => activate(tab.dataset.target));
+      tab.addEventListener('keydown', (e) => {
+        if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft' && e.key !== 'Home' && e.key !== 'End') {
+          return;
+        }
+        e.preventDefault();
+        const idx = tabs.indexOf(tab);
+        let nextIdx = idx;
+        if (e.key === 'ArrowRight') nextIdx = (idx + 1) % tabs.length;
+        else if (e.key === 'ArrowLeft') nextIdx = (idx - 1 + tabs.length) % tabs.length;
+        else if (e.key === 'Home') nextIdx = 0;
+        else if (e.key === 'End') nextIdx = tabs.length - 1;
+        const nextTab = tabs[nextIdx];
+        activate(nextTab.dataset.target);
+        nextTab.focus();
+      });
+    });
+
+    window.addEventListener('popstate', () => {
+      const fromHash = (location.hash || '').replace(/^#/, '');
+      const valid = ['distribution', 'writing', 'network'];
+      activate(valid.includes(fromHash) ? fromHash : 'distribution', { skipHash: true });
+    });
+
+    // Initial sync from URL hash
+    const initial = (location.hash || '').replace(/^#/, '');
+    const validInitial = ['distribution', 'writing', 'network'];
+    if (validInitial.includes(initial)) {
+      activate(initial, { skipHash: true });
+    }
+  })();
+</script>
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  /* Local tokens (override Base dark defaults for this page) */
+  .z-shell {
+    --bg: #f6f3ec;
+    --deep: #ede8dc;
+    --ink: #1a1814;
+    --soft: #4a4640;
+    --faint: #8a857c;
+    --line: #d8d2c2;
+    --accent: #c2410c;
+    --accent-soft: #fed7aa;
+
+    background: var(--bg);
+    color: var(--ink);
+    min-height: 100vh;
+
+    font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
+    font-weight: 400;
+    line-height: 1.6;
+
+    /* Override the Base body styles for this page only */
+  }
+
+  .z-shell a {
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .z-shell a:hover {
+    color: var(--accent);
+  }
+
+  .z-mono {
+    font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--faint);
+  }
+  .z-mono-accent {
+    color: var(--accent);
+  }
+
+  .z-container {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 28px;
+  }
+
+  /* Top-right fixed nav */
+  .z-topnav {
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 50;
+    display: flex;
+    gap: 20px;
+    padding: 20px 28px;
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .z-topnav a {
+    color: var(--soft);
+    transition: color 0.15s ease;
+  }
+  .z-topnav a:hover {
+    color: var(--accent);
+  }
+
+  /* HERO */
+  .z-hero {
+    padding: 140px 0 64px;
+  }
+  .z-h1 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 600;
+    font-size: clamp(2.5rem, 6vw, 4.4rem);
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+    margin: 0 0 24px;
+    max-width: 18ch;
+  }
+  .z-h1 em {
+    font-style: italic;
+    font-weight: 500;
+    color: var(--accent);
+  }
+  .z-lede {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 400;
+    font-size: 1.2rem;
+    line-height: 1.5;
+    color: var(--soft);
+    max-width: 52ch;
+    margin: 0;
+  }
+  .z-lede em {
+    font-style: italic;
+    color: var(--accent);
+    font-weight: 500;
+  }
+
+  /* TAB BAR */
+  .z-tabbar-wrap {
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    background: var(--bg);
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+  .z-tabbar {
+    display: flex;
+    gap: 0;
+  }
+  .z-tab {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    padding: 22px 32px 22px 0;
+    margin-right: 40px;
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    color: var(--faint);
+    cursor: pointer;
+    transition: color 0.15s ease, border-color 0.15s ease;
+    font-family: inherit;
+  }
+  .z-tab:first-child {
+    margin-left: 0;
+  }
+  .z-tab:hover {
+    color: var(--ink);
+  }
+  .z-tab.is-active {
+    color: var(--ink);
+    border-bottom-color: var(--accent);
+  }
+  .z-tab:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 4px;
+    border-radius: 2px;
+  }
+  .z-tab-num {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    color: var(--faint);
+  }
+  .z-tab.is-active .z-tab-num {
+    color: var(--accent);
+  }
+  .z-tab-label {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 1.15rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+  .z-tab-label em {
+    font-style: italic;
+    font-weight: 500;
+    color: inherit;
+  }
+  .z-tab.is-active .z-tab-label em {
+    color: var(--accent);
+  }
+
+  /* PANELS */
+  .z-panels {
+    background: var(--bg);
+  }
+  .z-panel {
+    padding: 72px 0 96px;
+    display: none;
+  }
+  .z-panel.is-active {
+    display: block;
+  }
+  .z-panel[hidden] {
+    display: none !important;
+  }
+  .z-panel-intro {
+    font-family: 'Fraunces', Georgia, serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 1.05rem;
+    color: var(--soft);
+    margin: 0 0 48px;
+    max-width: 56ch;
+    line-height: 1.55;
+  }
+
+  /* DISTRIBUTION grid */
+  .z-distro-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 28px;
+  }
+  .z-card {
+    display: flex;
+    flex-direction: column;
+    background: var(--deep);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    overflow: hidden;
+    transition: border-color 0.2s ease, transform 0.2s ease;
+    color: var(--ink);
+  }
+  .z-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+    color: var(--ink);
+  }
+  .z-card.is-featured {
+    grid-column: 1 / -1;
+  }
+  .z-card-thumb {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    background: #000;
+    overflow: hidden;
+  }
+  .z-card-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .z-card-play {
+    position: absolute;
+    bottom: 14px;
+    right: 14px;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: rgba(246, 243, 236, 0.92);
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s ease;
+  }
+  .z-card-play svg {
+    margin-left: 2px;
+  }
+  .z-card:hover .z-card-play {
+    background: var(--accent);
+    color: var(--bg);
+  }
+  .z-card.is-featured .z-card-play {
+    width: 56px;
+    height: 56px;
+    bottom: 20px;
+    right: 20px;
+  }
+  .z-card-body {
+    padding: 22px 24px 26px;
+  }
+  .z-card-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    gap: 12px;
+  }
+  .z-card-title {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 600;
+    font-size: 1.5rem;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+  .z-card.is-featured .z-card-title {
+    font-size: 2.1rem;
+  }
+  .z-card-desc {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+    color: var(--soft);
+    line-height: 1.55;
+  }
+  @media (max-width: 720px) {
+    .z-distro-grid {
+      grid-template-columns: 1fr;
+    }
+    .z-card.is-featured {
+      grid-column: auto;
+    }
+    .z-card.is-featured .z-card-title {
+      font-size: 1.5rem;
+    }
+  }
+
+  /* WRITING list */
+  .z-writing-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--line);
+  }
+  .z-writing-row {
+    display: grid;
+    grid-template-columns: 220px 1fr 24px;
+    gap: 32px;
+    padding: 26px 0;
+    border-bottom: 1px solid var(--line);
+    align-items: center;
+    transition: padding 0.2s ease, color 0.2s ease;
+  }
+  .z-writing-row:hover {
+    padding-left: 12px;
+    color: var(--accent);
+  }
+  .z-writing-pub {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--faint);
+  }
+  .z-writing-row:hover .z-writing-pub {
+    color: var(--accent);
+  }
+  .z-writing-title {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 500;
+    font-size: 1.25rem;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+  }
+  .z-writing-row:hover .z-writing-title {
+    color: var(--accent);
+  }
+  .z-writing-arrow {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    color: var(--faint);
+    transition: transform 0.2s ease, color 0.2s ease;
+    text-align: right;
+  }
+  .z-writing-row:hover .z-writing-arrow {
+    transform: translateX(6px);
+    color: var(--accent);
+  }
+  @media (max-width: 720px) {
+    .z-writing-row {
+      grid-template-columns: 1fr;
+      gap: 8px;
+      padding: 22px 0;
+    }
+    .z-writing-arrow {
+      text-align: left;
+    }
+  }
+
+  /* CONVERSATIONS */
+  .z-conv-featured {
+    margin-bottom: 56px;
+  }
+  .z-conv-frame {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    background: #000;
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid var(--line);
+  }
+  .z-conv-frame iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+  .z-conv-caption {
+    margin-top: 18px;
+  }
+  .z-conv-caption .z-mono {
+    margin-bottom: 6px;
+    display: block;
+  }
+  .z-conv-title {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 500;
+    font-size: 1.35rem;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  .z-conv-title em {
+    font-style: italic;
+    color: var(--accent);
+    font-weight: 500;
+  }
+
+  .z-conv-rail {
+    display: flex;
+    gap: 16px;
+    overflow-x: auto;
+    padding: 8px 4px 24px;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: var(--line) transparent;
+  }
+  .z-conv-rail-item {
+    flex: 0 0 240px;
+    scroll-snap-align: start;
+    background: var(--deep);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: border-color 0.15s ease, transform 0.15s ease;
+  }
+  .z-conv-rail-item:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+  .z-conv-rail-thumb {
+    aspect-ratio: 16 / 9;
+    background: #000;
+  }
+  .z-conv-rail-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .z-conv-rail-meta {
+    padding: 14px 16px 18px;
+  }
+  .z-conv-rail-subject {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+  .z-conv-rail-context {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    color: var(--soft);
+    line-height: 1.4;
+  }
+  @media (max-width: 720px) {
+    .z-conv-rail-item {
+      flex: 0 0 200px;
+    }
+  }
+
+  /* FOOTER */
+  .z-footer {
+    border-top: 1px solid var(--line);
+    background: var(--deep);
+    padding: 36px 0;
+  }
+  .z-footer-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .z-footer-mark {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--faint);
+  }
+  .z-footer-nav {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .z-footer-nav a {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--soft);
+  }
+  .z-footer-nav a:hover {
+    color: var(--accent);
+  }
+
+  /* Override Base body for this page */
+  :global(body) {
+    background: var(--bg) !important;
+    color: var(--ink) !important;
+  }
+</style>
