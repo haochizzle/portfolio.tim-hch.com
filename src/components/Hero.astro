@@ -1,0 +1,144 @@
+---
+import ScrollCue from "./ScrollCue.astro";
+---
+
+<section class="hero" id="hero">
+  <div class="hero-stage">
+    <h1 class="name serif" aria-label="Tim Ho">
+      <span class="ch" style="--i:0">T</span><span class="ch" style="--i:1">i</span><span class="ch" style="--i:2">m</span><span class="gap"></span><span class="ch" style="--i:3">H</span><span class="ch" style="--i:4">o</span>
+    </h1>
+    <div class="anvil">
+      <div class="anvil-plate">
+        <p class="anvil-text serif">I write. I film. I tell stories.<br/><span class="soft">Let me share mine.</span></p>
+        <div class="anvil-edge"></div>
+      </div>
+    </div>
+  </div>
+  <ScrollCue label="Scroll" />
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    min-height: 100svh;
+    background: var(--cream);
+    overflow: hidden;
+  }
+
+  .hero-stage {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 80px;
+  }
+
+  /* ---- TIM HO letter drop-in ---- */
+  .name {
+    font-size: clamp(5rem, 18vw, 14rem);
+    font-weight: 400;
+    letter-spacing: -0.04em;
+    line-height: 0.9;
+    color: var(--ink);
+    display: flex;
+    align-items: baseline;
+    margin: 0;
+  }
+  .name .gap { width: 0.3em; display: inline-block; }
+  .name .ch {
+    display: inline-block;
+    /* drop from above with rotate + slight 3D feel */
+    transform: translateY(-160%) rotate(-12deg);
+    opacity: 0;
+    animation: drop 900ms var(--ease-out) forwards;
+    animation-delay: calc(200ms + var(--i) * 110ms);
+    transform-origin: 50% 100%;
+    text-shadow: 0 0 0 var(--ink);
+    transition: text-shadow 1200ms var(--ease);
+  }
+  /* Laser-etch glow that fades after landing */
+  .name .ch { animation-fill-mode: forwards; }
+  .name.lit .ch {
+    text-shadow: 0 0 24px rgba(14, 14, 12, 0.25);
+  }
+
+  @keyframes drop {
+    0%   { transform: translateY(-160%) rotate(-12deg); opacity: 0; }
+    50%  { opacity: 1; }
+    75%  { transform: translateY(4%) rotate(0.5deg); }
+    100% { transform: translateY(0) rotate(0); opacity: 1; }
+  }
+
+  /* ---- Anvil plate drop ---- */
+  .anvil {
+    opacity: 0;
+    transform: translateY(-180vh) scaleY(0.4);
+    animation: anvil-drop 700ms cubic-bezier(0.6, 0, 0.2, 1) forwards;
+    animation-delay: 1300ms;
+    filter: drop-shadow(0 30px 24px rgba(14, 14, 12, 0.18));
+  }
+  @keyframes anvil-drop {
+    0%   { transform: translateY(-180vh) scaleY(0.4); opacity: 0; }
+    60%  { transform: translateY(-12px) scaleY(1.05); opacity: 1; }
+    80%  { transform: translateY(6px) scaleY(0.96); }
+    100% { transform: translateY(0) scaleY(1); opacity: 1; }
+  }
+
+  .anvil-plate {
+    position: relative;
+    background: var(--metal);
+    padding: 28px 64px;
+    border-top: 1px solid rgba(255, 255, 255, 0.5);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+  }
+  .anvil-plate::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      repeating-linear-gradient(
+        180deg,
+        transparent 0,
+        transparent 2px,
+        rgba(0,0,0,0.04) 2px,
+        rgba(0,0,0,0.04) 3px
+      );
+    pointer-events: none;
+  }
+  .anvil-edge {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: var(--metal-edge);
+  }
+  .anvil-text {
+    position: relative;
+    font-size: clamp(1.1rem, 2.4vw, 1.6rem);
+    font-style: italic;
+    text-align: center;
+    color: #2a2a26;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
+  }
+  .anvil-text .soft {
+    font-style: italic;
+    color: #4a463f;
+  }
+
+  @media (max-width: 720px) {
+    .hero-stage { gap: 48px; }
+    .anvil-plate { padding: 20px 28px; }
+  }
+</style>
+
+<script>
+  // Add laser-etch glow class after letters land
+  const name = document.querySelector(".hero .name");
+  if (name) {
+    setTimeout(() => name.classList.add("lit"), 1500);
+    setTimeout(() => name.classList.remove("lit"), 2400);
+  }
+</script>

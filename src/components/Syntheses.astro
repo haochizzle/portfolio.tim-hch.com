@@ -1,0 +1,187 @@
+---
+import { syntheses } from "../data/content.ts";
+import ScrollCue from "./ScrollCue.astro";
+
+const partnerLogos: Record<string, string> = {
+  "chainlink-quadrillions": "⛓", // unicode fallback — Tim to provide real logos
+  "fileverse-anti-docs": "◫",
+  "keycard-shell-gameboy": "▢",
+  "zora-paid-me": "◉",
+};
+---
+
+<section class="syntheses" id="syntheses">
+  <div class="stage">
+    <h2 class="arc-title cursive" aria-label="Syntheses">
+      <svg class="cursive-svg" viewBox="0 0 600 120" aria-hidden="true">
+        <defs>
+          <path id="synth-path" d="M 20 80 Q 50 20, 90 70 T 180 60 Q 230 10, 290 70 T 400 60 Q 450 20, 510 70 T 580 60" fill="none" />
+        </defs>
+        <text class="cursive-text">
+          <textPath href="#synth-path" startOffset="0">Syntheses</textPath>
+        </text>
+      </svg>
+      <span class="fallback cursive">Syntheses</span>
+    </h2>
+
+    <div class="grid" data-grid>
+      {syntheses.map((v, i) => (
+        <article class="card video-card" style={`--i:${i}`}>
+          <div class="logo" aria-hidden="true">{partnerLogos[v.id] ?? "◇"}</div>
+          <div class="embed">
+            <iframe
+              src={`https://www.youtube-nocookie.com/embed/${v.youtubeId}`}
+              title={v.title}
+              loading="lazy"
+              allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+            ></iframe>
+          </div>
+          <div class="meta">
+            <h3 class="serif">{v.title}</h3>
+            <p>{v.description}</p>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+  <ScrollCue label="Continue" />
+</section>
+
+<style>
+  .syntheses {
+    position: relative;
+    min-height: 100vh;
+    min-height: 100svh;
+    background: var(--cream);
+    padding: 120px 24px 96px;
+  }
+
+  .stage {
+    max-width: 1080px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 64px;
+  }
+
+  /* Cursive title — draw-on via stroke-dashoffset */
+  .arc-title {
+    width: 100%;
+    max-width: 600px;
+    text-align: center;
+    position: relative;
+    margin: 0;
+  }
+  .arc-title .cursive-svg { width: 100%; height: auto; overflow: visible; display: block; }
+  .arc-title .fallback { display: none; }
+
+  /* Draw the cursive word with stroke-dashoffset trick using a visible invisible-line */
+  .cursive-svg text {
+    font-family: var(--cursive);
+    font-size: 90px;
+    fill: transparent;
+    stroke: var(--ink);
+    stroke-width: 0.8;
+    stroke-dasharray: 800;
+    stroke-dashoffset: 800;
+    animation: draw 1800ms var(--ease) 200ms forwards;
+  }
+  @keyframes draw {
+    to { stroke-dashoffset: 0; }
+  }
+  /* After draw, fill in solid (simulate ink absorbing) */
+  .cursive-svg text {
+    animation: draw 1800ms var(--ease) 200ms forwards,
+               fill-in 700ms var(--ease) 1700ms forwards;
+  }
+  @keyframes fill-in {
+    to { fill: var(--ink); stroke-width: 0.4; }
+  }
+
+  /* Cards grid — 1 row on desktop, 1 col on mobile, intentional */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 36px;
+    width: 100%;
+  }
+  @media (min-width: 1000px) {
+    .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+
+  .card {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 700ms var(--ease), transform 700ms var(--ease);
+  }
+  .grid.in .card {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: calc(200ms + var(--i) * 130ms);
+  }
+
+  .video-card {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .logo {
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    color: var(--ink);
+    border: 1px solid var(--ink);
+    border-radius: 50%;
+  }
+
+  .embed {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    background: var(--cream-deep);
+    overflow: hidden;
+    border: 1px solid var(--rule);
+  }
+  .embed iframe { width: 100%; height: 100%; border: 0; }
+
+  .meta h3 {
+    font-size: 1.4rem;
+    font-weight: 500;
+    margin-bottom: 4px;
+  }
+  .meta p {
+    color: var(--ink-mute);
+    font-size: 0.92rem;
+    line-height: 1.55;
+  }
+
+  @media (max-width: 720px) {
+    .grid { grid-template-columns: 1fr; }
+    .syntheses { padding: 80px 20px; }
+  }
+</style>
+
+<script>
+  // Trigger card drop-in when section enters viewport
+  const syntheses = document.getElementById("syntheses");
+  const grid = syntheses?.querySelector("[data-grid]");
+  if (syntheses && grid) {
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            grid.classList.add("in");
+            io.disconnect();
+          }
+        });
+      },
+      { threshold: 0.25 }
+    );
+    io.observe(syntheses);
+  }
+</script>

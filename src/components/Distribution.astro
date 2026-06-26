@@ -1,0 +1,279 @@
+---
+import { distribution } from "../data/content.ts";
+import ScrollCue from "./ScrollCue.astro";
+
+const fmt = (n: number) => n >= 1000 ? `${(n / 1000).toFixed(1)}K` : String(n);
+const fmtDate = (iso: string) => {
+  const d = new Date(iso);
+  return d.toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" });
+};
+const truncate = (s: string, n: number) => s.length > n ? s.slice(0, n).trim() + "…" : s;
+---
+
+<section class="distribution" id="distribution">
+  <div class="stage">
+    <div class="title-wrap" data-title>
+      <h2 class="arc-title serif" data-text="Distribution">
+        {Array.from("Distribution").map((c, i) => (
+          <span class="glyph" data-glyph={c} style={`--i:${i}`}>{c}</span>
+        ))}
+      </h2>
+    </div>
+
+    <div class="carousel" data-carousel>
+      <button class="nav prev" aria-label="Previous">←</button>
+      <div class="track" data-track>
+        {distribution.map((item, i) => {
+          if (item.kind === "tweet") {
+            return (
+              <article class="card tweet" style={`--i:${i}`}>
+                <header>
+                  <div class="avatar">TH</div>
+                  <div class="who">
+                    <div class="name">Tim Ho <span class="handle">@haochizzle</span></div>
+                    <div class="sub">{fmtDate(item.postedAt)} · 𝕏</div>
+                  </div>
+                </header>
+                <p class="body">{truncate(item.text, 240)}</p>
+                <footer>
+                  <span>💬 {fmt(item.replies)}</span>
+                  <span>↻ {fmt(item.retweets)}</span>
+                  <span>♡ {fmt(item.likes)}</span>
+                </footer>
+                <a class="card-link" href={item.url} target="_blank" rel="noopener" aria-label="View on X"></a>
+              </article>
+            );
+          }
+          return (
+            <article class="card reddit" style={`--i:${i}`}>
+              <header>
+                <div class="avatar reddit-avatar">r/</div>
+                <div class="who">
+                  <div class="name">{item.subreddit} <span class="handle">· u/haochizzle</span></div>
+                  <div class="sub">{fmtDate(item.postedAt)}</div>
+                </div>
+              </header>
+              <h3 class="title">{item.title}</h3>
+              <p class="body">{truncate(item.body, 240)}</p>
+              <footer>
+                <span>▲ {fmt(item.upvotes)}</span>
+                <span>💬 {fmt(item.comments)}</span>
+              </footer>
+              <a class="card-link" href={item.url} target="_blank" rel="noopener" aria-label="View on Reddit"></a>
+            </article>
+          );
+        })}
+      </div>
+      <button class="nav next" aria-label="Next">→</button>
+    </div>
+  </div>
+  <ScrollCue label="Continue" />
+</section>
+
+<style>
+  .distribution {
+    position: relative;
+    min-height: 100vh;
+    min-height: 100svh;
+    background: var(--cream);
+    padding: 120px 24px 96px;
+    overflow: hidden;
+  }
+
+  .stage {
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 64px;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* Transformer letter assembly */
+  .arc-title {
+    font-size: clamp(2.6rem, 8vw, 5.5rem);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    display: flex;
+    perspective: 600px;
+  }
+  .glyph {
+    display: inline-block;
+    opacity: 0;
+    transform: rotateY(180deg) scale(2.6) translateY(-40vh);
+    transform-origin: 50% 50%;
+    transition: transform 900ms var(--ease-out), opacity 600ms var(--ease-out);
+  }
+  .distribution.in .glyph {
+    opacity: 1;
+    transform: rotateY(0) scale(1) translateY(0);
+    transition-delay: calc(300ms + var(--i) * 90ms);
+  }
+
+  /* Cards */
+  .carousel {
+    position: relative;
+    width: 100%;
+  }
+  .track {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    gap: 28px;
+    padding: 8px 4px 24px;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .track::-webkit-scrollbar { display: none; }
+
+  .card {
+    position: relative;
+    flex: 0 0 100%;
+    scroll-snap-align: center;
+    background: var(--cream-deep);
+    border: 1px solid var(--rule);
+    padding: 24px;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 700ms var(--ease), transform 700ms var(--ease);
+  }
+  .distribution.in .card {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: calc(1300ms + var(--i) * 80ms);
+  }
+
+  .card-link {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+
+  .card header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+    position: relative;
+    z-index: 2;
+  }
+  .avatar {
+    width: 38px;
+    height: 38px;
+    background: var(--ink);
+    color: var(--cream);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--sans);
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    border-radius: 50%;
+  }
+  .reddit-avatar {
+    background: #ff4500;
+    color: var(--cream);
+  }
+  .who { flex: 1; min-width: 0; }
+  .name {
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+  .handle {
+    color: var(--ink-dim);
+    font-weight: 400;
+    font-size: 0.85rem;
+  }
+  .sub {
+    color: var(--ink-dim);
+    font-size: 0.78rem;
+    margin-top: 2px;
+  }
+
+  .title {
+    font-family: var(--serif);
+    font-size: 1.3rem;
+    font-weight: 500;
+    line-height: 1.3;
+    margin-bottom: 10px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .body {
+    color: var(--ink-soft);
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 16px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .card footer {
+    display: flex;
+    gap: 18px;
+    color: var(--ink-mute);
+    font-size: 0.82rem;
+    border-top: 1px solid var(--rule);
+    padding-top: 12px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 44px;
+    height: 44px;
+    border: 1px solid var(--rule);
+    background: var(--cream);
+    color: var(--ink);
+    font-size: 1.1rem;
+    z-index: 3;
+    transition: border-color 250ms var(--ease), background 250ms var(--ease);
+  }
+  .nav:hover {
+    border-color: var(--accent);
+    background: var(--accent);
+    color: var(--cream);
+  }
+  .nav.prev { left: -56px; }
+  .nav.next { right: -56px; }
+  @media (max-width: 980px) {
+    .nav.prev { left: 4px; }
+    .nav.next { right: 4px; }
+  }
+</style>
+
+<script>
+  const section = document.getElementById("distribution");
+  const io = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) {
+          section?.classList.add("in");
+          io.disconnect();
+        }
+      });
+    },
+    { threshold: 0.25 }
+  );
+  if (section) io.observe(section);
+
+  document.querySelectorAll<HTMLElement>("[data-carousel]").forEach((c) => {
+    const track = c.querySelector<HTMLElement>("[data-track]");
+    if (!track) return;
+    c.querySelector(".prev")?.addEventListener("click", () =>
+      track.scrollBy({ left: -track.clientWidth, behavior: "smooth" })
+    );
+    c.querySelector(".next")?.addEventListener("click", () =>
+      track.scrollBy({ left: track.clientWidth, behavior: "smooth" })
+    );
+  });
+</script>

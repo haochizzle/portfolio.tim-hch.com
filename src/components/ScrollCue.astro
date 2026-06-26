@@ -1,0 +1,56 @@
+---
+interface Props {
+  label?: string;
+}
+const { label = "Scroll" } = Astro.props;
+---
+
+<div class="cue" aria-hidden="true">
+  <span class="cue-label">{label}</span>
+  <span class="cue-arrow"></span>
+</div>
+
+<style>
+  .cue {
+    position: absolute;
+    bottom: 36px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    pointer-events: none;
+  }
+  .cue-label {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+  }
+  .cue-arrow {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, transparent 0%, var(--accent) 50%, transparent 100%);
+    position: relative;
+    overflow: hidden;
+  }
+  .cue-arrow::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 30%;
+    background: var(--accent);
+    box-shadow: 0 0 12px 2px var(--accent-glow);
+    animation: cue-pulse 2.4s var(--ease) infinite;
+  }
+  @keyframes cue-pulse {
+    0%   { transform: translateY(-100%); opacity: 0; }
+    20%  { opacity: 1; }
+    80%  { opacity: 1; }
+    100% { transform: translateY(300%); opacity: 0; }
+  }
+</style>

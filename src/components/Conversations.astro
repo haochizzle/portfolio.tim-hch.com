@@ -1,0 +1,315 @@
+---
+import { conversations } from "../data/content.ts";
+import ScrollCue from "./ScrollCue.astro";
+
+// Speech-bubble placeholder text — abstract babble, not real words
+const babble = [
+  "yeah so basically", "the thing is", "no but listen", "right right right",
+  "I mean technically", "from what I've seen", "and this is the part", "they don't tell you",
+  "but actually", "ok so here's the deal", "wait wait wait", "the real insight is",
+];
+---
+
+<section class="conversations" id="conversations">
+  <canvas class="babble-canvas" id="babble-canvas" aria-hidden="true"></canvas>
+
+  <div class="stage">
+    <div class="title-wrap" data-title>
+      <h2 class="arc-title serif">Conversations</h2>
+      <div class="strike"></div>
+    </div>
+
+    <div class="carousel" data-carousel>
+      <button class="nav prev" aria-label="Previous">←</button>
+      <div class="track" data-track>
+        {conversations.map((c, i) => (
+          <article class="card conv-card" style={`--i:${i}`}>
+            <div class="embed">
+              <iframe
+                src={`https://www.youtube-nocookie.com/embed/${c.youtubeId}`}
+                title={`${c.guest} — ${c.title}`}
+                loading="lazy"
+                allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen
+              ></iframe>
+            </div>
+            <div class="meta">
+              <span class="guest mono">{c.guest}</span>
+              <h3 class="serif">{c.title}</h3>
+              <p>{c.context}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+      <button class="nav next" aria-label="Next">→</button>
+    </div>
+  </div>
+  <ScrollCue label="Continue" />
+</section>
+
+<style>
+  .conversations {
+    position: relative;
+    min-height: 100vh;
+    min-height: 100svh;
+    background: var(--cream);
+    overflow: hidden;
+  }
+
+  .babble-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 700ms var(--ease);
+  }
+  .conversations.in .babble-canvas { opacity: 0.7; }
+
+  .stage {
+    position: relative;
+    z-index: 2;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 120px 24px 96px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 64px;
+  }
+
+  .title-wrap {
+    position: relative;
+    text-align: center;
+  }
+  .arc-title {
+    font-size: clamp(3rem, 9vw, 6rem);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 800ms var(--ease) 600ms, transform 800ms var(--ease) 600ms;
+  }
+  .conversations.in .arc-title {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .strike {
+    position: absolute;
+    top: 50%;
+    left: -10%;
+    right: -10%;
+    height: 2px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left center;
+    box-shadow: 0 0 16px var(--accent-glow);
+    transition: transform 1100ms var(--ease) 300ms;
+  }
+  .conversations.in .strike { transform: scaleX(1); }
+
+  /* Carousel */
+  .carousel {
+    position: relative;
+    width: 100%;
+  }
+  .track {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    gap: 32px;
+    padding: 8px 4px 24px;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .track::-webkit-scrollbar { display: none; }
+
+  .conv-card {
+    flex: 0 0 100%;
+    scroll-snap-align: center;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 700ms var(--ease), transform 700ms var(--ease);
+  }
+  .conversations.in .conv-card {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: calc(900ms + var(--i) * 110ms);
+  }
+
+  .embed {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    background: var(--cream-deep);
+    overflow: hidden;
+    border: 1px solid var(--rule);
+  }
+  .embed iframe { width: 100%; height: 100%; border: 0; }
+
+  .meta {
+    margin-top: 20px;
+    text-align: center;
+  }
+  .guest {
+    display: inline-block;
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+  .meta h3 {
+    font-size: 1.6rem;
+    font-weight: 500;
+    margin-bottom: 6px;
+  }
+  .meta p {
+    color: var(--ink-mute);
+    font-size: 0.95rem;
+    max-width: 560px;
+    margin: 0 auto;
+  }
+
+  .nav {
+    position: absolute;
+    top: 38%;
+    transform: translateY(-50%);
+    width: 44px;
+    height: 44px;
+    border: 1px solid var(--rule);
+    background: var(--cream);
+    color: var(--ink);
+    font-size: 1.1rem;
+    z-index: 3;
+    transition: border-color 250ms var(--ease), background 250ms var(--ease);
+  }
+  .nav:hover {
+    border-color: var(--accent);
+    background: var(--accent);
+    color: var(--cream);
+  }
+  .nav.prev { left: -56px; }
+  .nav.next { right: -56px; }
+
+  @media (max-width: 980px) {
+    .nav.prev { left: 4px; }
+    .nav.next { right: 4px; }
+  }
+</style>
+
+<script>
+  const section = document.getElementById("conversations");
+  const canvas = document.getElementById("babble-canvas") as HTMLCanvasElement | null;
+
+  // Speech-bubble babble renderer — abstract, not real words
+  function setupBabble(c: HTMLCanvasElement) {
+    const ctx = c.getContext("2d");
+    if (!ctx) return;
+
+    const dpr = window.devicePixelRatio || 1;
+    const resize = () => {
+      c.width = c.clientWidth * dpr;
+      c.height = c.clientHeight * dpr;
+    };
+    resize();
+    window.addEventListener("resize", resize);
+
+    type Bubble = { x: number; y: number; r: number; text: string; alpha: number; vx: number; vy: number; };
+    const bubbles: Bubble[] = [];
+    const phrases = [
+      "yeah", "right", "ok but", "wait", "the thing is", "no listen",
+      "basically", "exactly", "I mean", "and then", "so actually", "right right",
+      "you know", "for sure", "totally", "the real", "what I mean",
+    ];
+
+    const spawn = () => {
+      const w = c.clientWidth;
+      const h = c.clientHeight;
+      bubbles.push({
+        x: Math.random() * w,
+        y: h + 40,
+        r: 30 + Math.random() * 50,
+        text: phrases[Math.floor(Math.random() * phrases.length)],
+        alpha: 0.4 + Math.random() * 0.4,
+        vx: (Math.random() - 0.5) * 0.6,
+        vy: -0.4 - Math.random() * 0.6,
+      });
+    };
+
+    let raf = 0;
+    let running = true;
+    const tick = () => {
+      if (!running) return;
+      ctx.clearRect(0, 0, c.width, c.height);
+      ctx.save();
+      ctx.scale(dpr, dpr);
+      ctx.font = '13px "Inter", sans-serif';
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      for (const b of bubbles) {
+        b.x += b.vx;
+        b.y += b.vy;
+        ctx.globalAlpha = b.alpha;
+        // pill background
+        const w = ctx.measureText(b.text).width + 24;
+        const h = 26;
+        ctx.fillStyle = "#1f4ed8";
+        ctx.beginPath();
+        const x = b.x - w / 2;
+        const y = b.y - h / 2;
+        const rad = 13;
+        ctx.moveTo(x + rad, y);
+        ctx.arcTo(x + w, y, x + w, y + h, rad);
+        ctx.arcTo(x + w, y + h, x, y + h, rad);
+        ctx.arcTo(x, y + h, x, y, rad);
+        ctx.arcTo(x, y, x + w, y, rad);
+        ctx.closePath();
+        ctx.fill();
+        ctx.fillStyle = "#f3efe5";
+        ctx.fillText(b.text, b.x, b.y);
+      }
+      ctx.restore();
+      bubbles.forEach((b, i) => { if (b.y < -60) bubbles.splice(i, 1); });
+      if (Math.random() < 0.06) spawn();
+      raf = requestAnimationFrame(tick);
+    };
+    tick();
+    return () => { running = false; cancelAnimationFrame(raf); };
+  }
+
+  let cleanup: (() => void) | undefined;
+  let active = false;
+
+  const io = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting && !active) {
+          active = true;
+          section?.classList.add("in");
+          if (canvas && !cleanup) cleanup = setupBabble(canvas);
+          // Stop babble after 3s — Conversations title is the focus
+          setTimeout(() => {
+            if (canvas) canvas.style.opacity = "0";
+          }, 3500);
+        }
+      });
+    },
+    { threshold: 0.3 }
+  );
+  if (section) io.observe(section);
+
+  // Carousel nav
+  document.querySelectorAll<HTMLElement>("[data-carousel]").forEach((c) => {
+    const track = c.querySelector<HTMLElement>("[data-track]");
+    if (!track) return;
+    c.querySelector(".prev")?.addEventListener("click", () =>
+      track.scrollBy({ left: -track.clientWidth, behavior: "smooth" })
+    );
+    c.querySelector(".next")?.addEventListener("click", () =>
+      track.scrollBy({ left: track.clientWidth, behavior: "smooth" })
+    );
+  });
+</script>

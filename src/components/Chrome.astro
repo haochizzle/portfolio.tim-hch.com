@@ -1,0 +1,154 @@
+---
+// Hamburger menu — top right, available everywhere
+const sections = [
+  { id: "hero", label: "Intro" },
+  { id: "syntheses", label: "Syntheses" },
+  { id: "conversations", label: "Conversations" },
+  { id: "distribution", label: "Distribution" },
+  { id: "contact", label: "Contact" },
+];
+---
+
+<header class="chrome">
+  <a href="#hero" class="wordmark serif">Tim Ho</a>
+  <nav class="nav">
+    <button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false">
+      <span></span><span></span>
+    </button>
+    <div class="menu" id="menu" hidden>
+      <button class="menu-close" id="menu-close" aria-label="Close">×</button>
+      <ul>
+        {sections.map((s) => (
+          <li><a href={`#${s.id}`} class="menu-link">{s.label}</a></li>
+        ))}
+        <li class="menu-rule"></li>
+        <li><a href="/cv.pdf" download class="menu-link">Download CV</a></li>
+        <li><a href="mailto:contact@tim-hch.com" class="menu-link">contact@tim-hch.com</a></li>
+      </ul>
+    </div>
+  </nav>
+</header>
+
+<style>
+  .chrome {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 36px;
+    pointer-events: none;
+  }
+  .chrome > * { pointer-events: auto; }
+
+  .wordmark {
+    font-size: 1.05rem;
+    letter-spacing: 0.01em;
+    color: var(--ink);
+    transition: opacity 250ms var(--ease);
+  }
+  .wordmark:hover { opacity: 0.6; }
+
+  .hamburger {
+    width: 28px;
+    height: 22px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .hamburger span {
+    display: block;
+    height: 1px;
+    background: var(--ink);
+    transition: transform 350ms var(--ease), opacity 200ms var(--ease);
+  }
+  .hamburger span:first-child { width: 100%; }
+  .hamburger span:last-child { width: 70%; align-self: flex-end; }
+  .hamburger[aria-expanded="true"] span:first-child {
+    transform: translateY(10px) rotate(45deg);
+  }
+  .hamburger[aria-expanded="true"] span:last-child {
+    width: 100%;
+    transform: translateY(-10px) rotate(-45deg);
+  }
+
+  .menu {
+    position: fixed;
+    inset: 0;
+    background: var(--cream);
+    z-index: 99;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 350ms var(--ease);
+  }
+  .menu[hidden] { display: none; }
+  .menu:not([hidden]) { opacity: 1; }
+
+  .menu-close {
+    position: absolute;
+    top: 24px;
+    right: 36px;
+    font-size: 1.8rem;
+    line-height: 1;
+    color: var(--ink);
+  }
+
+  .menu ul {
+    list-style: none;
+    text-align: center;
+  }
+  .menu li {
+    margin: 14px 0;
+  }
+  .menu-rule {
+    height: 1px;
+    background: var(--rule);
+    margin: 28px auto !important;
+    width: 60px;
+  }
+  .menu-link {
+    font-family: var(--serif);
+    font-size: 1.8rem;
+    color: var(--ink);
+    transition: opacity 200ms var(--ease);
+  }
+  .menu-link:hover { opacity: 0.5; }
+
+  @media (max-width: 720px) {
+    .chrome { padding: 18px 22px; }
+    .menu-link { font-size: 1.4rem; }
+  }
+</style>
+
+<script>
+  const hamburger = document.getElementById("hamburger");
+  const menu = document.getElementById("menu");
+  const close = document.getElementById("menu-close");
+
+  const open = () => {
+    menu!.hidden = false;
+    requestAnimationFrame(() => {
+      hamburger!.setAttribute("aria-expanded", "true");
+      document.body.style.overflow = "hidden";
+    });
+  };
+  const shut = () => {
+    hamburger!.setAttribute("aria-expanded", "false");
+    document.body.style.overflow = "";
+    setTimeout(() => { menu!.hidden = true; }, 350);
+  };
+
+  hamburger?.addEventListener("click", () => {
+    if (hamburger.getAttribute("aria-expanded") === "true") shut();
+    else open();
+  });
+  close?.addEventListener("click", shut);
+  menu?.querySelectorAll("a").forEach((a) => a.addEventListener("click", shut));
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && hamburger?.getAttribute("aria-expanded") === "true") shut();
+  });
+</script>
