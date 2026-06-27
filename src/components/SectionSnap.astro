@@ -4,6 +4,14 @@
 ---
 <script>
   (function() {
+    // Debug marker — visible only if data-debug=1 on <html>. Off by default.
+    if (document.documentElement.dataset.debug === "1") {
+      const tag = document.createElement("div");
+      tag.textContent = "SNAP OK · sections=" + document.querySelectorAll("section[id]").length;
+      tag.style.cssText = "position:fixed;bottom:8px;left:8px;background:#000;color:#fff;padding:4px 8px;font:11px monospace;z-index:9999;border-radius:3px;";
+      document.body.appendChild(tag);
+    }
+
     const sections = Array.from(document.querySelectorAll("section[id]")) as HTMLElement[];
     if (sections.length === 0) return;
 
@@ -26,7 +34,8 @@
       const target = sections[Math.max(0, Math.min(sections.length - 1, i))];
       if (!target) return;
       locked = true;
-      target.scrollIntoView({ behavior: "smooth", block: "start" });
+      // Instant scroll — no smooth animation, no chance to land mid-section
+      window.scrollTo({ top: target.offsetTop, behavior: "auto" });
       setTimeout(() => { locked = false; }, LOCK_MS);
     };
 
@@ -35,12 +44,11 @@
     const WHEEL_THRESHOLD = 80;
     window.addEventListener("wheel", (e) => {
       if (locked) return;
-      // Don't hijack wheel when it's clearly over an interactive element
+      // Allow scrolling inside carousels (horizontal)
       const t = e.target as HTMLElement | null;
-      if (t?.closest(".carousel .track, .nav, .card-link, a, button, [data-embed-iframe]")) {
-        // Allow carousel scroll / link clicks / button presses
-        return;
-      }
+      if (t?.closest(".carousel .track")) return;
+      // Don't snap if user is interacting with a link or button (click handler should fire)
+      if (t?.closest("a, button")) return;
       wheelAcc += e.deltaY;
       if (Math.abs(wheelAcc) >= WHEEL_THRESHOLD) {
         const dir = wheelAcc > 0 ? 1 : -1;

@@ -15,7 +15,8 @@ export type Conversation = {
   guest: string;
   title: string;
   context: string;
-  youtubeId: string;
+  youtubeId?: string;  // optional — local file path takes precedence
+  localFile?: string;  // path under /public, e.g. "/trailers/jimmy.mp4"
 };
 
 export type Tweet = {
@@ -52,6 +53,8 @@ export const syntheses: Video[] = [
 ];
 
 // Section 3 — Conversations (7 entries — carousel)
+// localFile takes precedence over youtubeId when present.
+// Drop MP4s at: /root/.openclaw/workspace/portfolio/public/trailers/
 export const conversations: Conversation[] = [
   {
     id: "jimmy-cygaar",
@@ -59,6 +62,7 @@ export const conversations: Conversation[] = [
     title: "Good Tech Won't Save You",
     context: "Five years in crypto. Trust, distribution, people — what outlasts code.",
     youtubeId: "OvMEl4L-0bY",
+    localFile: "/trailers/jimmy-cygaar.mp4",
   },
   {
     id: "zy0n",
@@ -66,6 +70,7 @@ export const conversations: Conversation[] = [
     title: "Privacy for the Sovereign Individual",
     context: "Railgun x zy0n. Nelson BC. The conversation that defined the channel.",
     youtubeId: "8qhMECRarpE",
+    localFile: "/trailers/zy0n-railgun.mp4",
   },
   {
     id: "timofey",
@@ -73,6 +78,7 @@ export const conversations: Conversation[] = [
     title: "On Building Through the Bear",
     context: "Building when nobody's watching. The unglamorous middle.",
     youtubeId: "SHXgT17J874",
+    localFile: "/trailers/timofey.mp4",
   },
   {
     id: "oskar-ef-iptf",
@@ -80,6 +86,7 @@ export const conversations: Conversation[] = [
     title: "Zero Knowledge for the Rest of Us",
     context: "The privacy researcher breaking down what's coming next.",
     youtubeId: "p-cKWfAj6nI",
+    localFile: "/trailers/oskar-ef-iptf.mp4",
   },
   {
     id: "alan-scott-railgun",
@@ -87,6 +94,7 @@ export const conversations: Conversation[] = [
     title: "Privacy as Default, Respectability as Design",
     context: "Why opt-in privacy is the only viable path for a regulated world.",
     youtubeId: "N7i1wAnGOpI",
+    localFile: "/trailers/alan-scott-railgun.mp4",
   },
   {
     id: "chris-blake",
@@ -94,6 +102,7 @@ export const conversations: Conversation[] = [
     title: "Independent Research, Real Conviction",
     context: "Independent researcher on what's actually working in crypto today.",
     youtubeId: "6KaxUw5YZe0",
+    localFile: "/trailers/chris-blake.mp4",
   },
   {
     id: "phil-ngo",
@@ -101,6 +110,7 @@ export const conversations: Conversation[] = [
     title: "Ethereum Consensus, In Practice",
     context: "Lodestar team on the unglamorous work of running Ethereum's consensus layer.",
     youtubeId: "2uwr6wk29lg",
+    localFile: "/trailers/phil-ngo-lodestar.mp4",
   },
 ];
 

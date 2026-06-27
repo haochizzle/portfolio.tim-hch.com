@@ -16,14 +16,24 @@ import ScrollCue from "./ScrollCue.astro";
         {conversations.map((c, i) => (
           <article class="card conv-card" style={`--i:${i}`}>
             <div class="embed">
-              <iframe
-                src={`https://www.youtube-nocookie.com/embed/${c.youtubeId}`}
-                title={`${c.guest} — ${c.title}`}
-                loading="lazy"
-                allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowfullscreen
-                data-embed-iframe
-              ></iframe>
+              {c.localFile ? (
+                <video
+                  src={c.localFile}
+                  controls
+                  preload="metadata"
+                  playsinline
+                  data-embed-iframe
+                ></video>
+              ) : (
+                <iframe
+                  src={`https://www.youtube-nocookie.com/embed/${c.youtubeId}`}
+                  title={`${c.guest} — ${c.title}`}
+                  loading="lazy"
+                  allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowfullscreen
+                  data-embed-iframe
+                ></iframe>
+              )}
             </div>
             <div class="meta">
               <span class="guest mono">{c.guest}</span>
@@ -144,12 +154,15 @@ import ScrollCue from "./ScrollCue.astro";
     overflow: hidden;
     border: 1px solid var(--rule);
   }
-  .embed iframe {
-    width: 100%; height: 100%; border: 0;
+  .embed iframe,
+  .embed video {
+    width: 100%; height: 100%; border: 0; display: block;
     pointer-events: none;
   }
   .conv-card:hover .embed iframe,
-  .conv-card:focus-within .embed iframe {
+  .conv-card:hover .embed video,
+  .conv-card:focus-within .embed iframe,
+  .conv-card:focus-within .embed video {
     pointer-events: auto;
   }
 
