@@ -45,7 +45,7 @@ export type Distribution = Tweet | Reddit;
 
 // Section 2 — Syntheses
 export const syntheses: Video[] = [
-  { id: "chainlink-quadrillions", title: "Quadrillions", youtubeId: "HnIVu22jAC4", publishedAt: "2026-01-09" },
+  { id: "chainlink-quadrillions", title: "Quadrillions", youtubeId: "dHiHR9jeuF8", publishedAt: "2026-01-09" },
   { id: "fileverse-anti-docs", title: "Anti-Google Docs", youtubeId: "Gu4y0SZNmoU", publishedAt: "2025-09-04" },
   { id: "keycard-shell-gameboy", title: "Gameboy or Wallet?", youtubeId: "HgXoI4jad-g", publishedAt: "2026-05-20" },
   { id: "zora-paid-me", title: "Guess Which Paid Me?", youtubeId: "NJX_z4i8c_E", publishedAt: "2025-05-28" },

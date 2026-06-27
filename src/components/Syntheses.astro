@@ -14,8 +14,8 @@ const logos: Record<string, string> = {
   <div class="strike-line" aria-hidden="true"></div>
 
   <div class="stage">
-    <h2 class="arc-title cursive" aria-label="Syntheses">
-      <span class="title-text">Syntheses</span>
+    <h2 class="arc-title" aria-label="Syntheses">
+      <span class="title-text cursive">Syntheses</span>
     </h2>
 
     <div class="carousel" data-carousel>
@@ -35,9 +35,7 @@ const logos: Record<string, string> = {
             </div>
             <div class="meta">
               <div class="logo" aria-hidden="true" set:html={logos[v.id] ?? ""}></div>
-              <div class="meta-text">
-                <h3 class="serif">{v.title}</h3>
-              </div>
+              <h3 class="serif">{v.title}</h3>
             </div>
           </article>
         ))}
@@ -56,75 +54,75 @@ const logos: Record<string, string> = {
     height: 100svh;
     background: var(--cream);
     overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
   }
 
-  /* Strike line — IDENTICAL to Conversations */
+  /* Strike line — IDENTICAL to Conversations, but fades out after sweep */
   .strike-line {
     position: absolute;
-    left: 0; right: 0;
     top: 50%;
-    height: 1px;
-    background: #1f4ed8;
-    transform: scaleX(0);
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--accent);
+    box-shadow: 0 0 16px var(--accent-glow), 0 0 32px var(--accent-glow);
+    transform: translateY(-50%) scaleX(0);
     transform-origin: left center;
     z-index: 2;
+    pointer-events: none;
+    opacity: 0;
   }
   .syntheses.strike .strike-line {
-    animation: strike 700ms var(--ease) forwards;
+    animation:
+      strike-sweep 700ms var(--ease) forwards,
+      strike-fade 500ms ease 700ms forwards;
   }
-  @keyframes strike {
-    to { transform: scaleX(1); }
+  @keyframes strike-sweep {
+    0%   { transform: translateY(-50%) scaleX(0); opacity: 1; }
+    100% { transform: translateY(-50%) scaleX(1); opacity: 1; }
+  }
+  @keyframes strike-fade {
+    to { opacity: 0; }
   }
 
+  /* Stage — IDENTICAL to Conversations */
   .stage {
-    width: 100%;
-    max-width: 1400px;
-    padding: 0 64px;
+    position: relative;
+    z-index: 3;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 100px 24px 80px;
     display: flex;
     flex-direction: column;
-    gap: 32px;
+    align-items: center;
+    gap: 56px;
     height: 100%;
-    align-items: stretch;
     justify-content: center;
   }
 
-  /* === CURSIVE TITLE — big, fade-up, identical timing pattern to Conversations === */
+  /* === CURSIVE TITLE — fades up, same fade-in timing as Conversations === */
   .arc-title {
-    width: 100%;
-    text-align: center;
     margin: 0;
-    flex-shrink: 0;
-    position: relative;
-    height: 120px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    text-align: center;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 800ms var(--ease) 700ms, transform 800ms var(--ease) 700ms;
   }
-  .arc-title .title-text {
+  .syntheses.reveal .arc-title {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .title-text {
     font-family: var(--cursive);
-    font-size: 110px;
+    font-size: 7rem;
     font-weight: 700;
     color: var(--ink);
     line-height: 1;
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  /* Phase 1 (strike): title fades in */
-  .syntheses.strike .title-text {
-    animation: title-in 1200ms var(--ease) forwards;
-  }
-  @keyframes title-in {
-    to { opacity: 1; transform: translateY(0); }
   }
 
-  /* === THEATRE CAROUSEL — IDENTICAL TO CONVERSATIONS === */
+  /* === CAROUSEL — IDENTICAL to Conversations === */
   .carousel {
-    position: relative;
-    width: 100%;
     flex: 1;
+    position: relative;
     min-height: 0;
   }
   .track {
@@ -136,38 +134,30 @@ const logos: Record<string, string> = {
     padding: 8px 4px 24px;
     -ms-overflow-style: none;
     scrollbar-width: none;
-    height: 100%;
   }
   .track::-webkit-scrollbar { display: none; }
 
+  /* Card — IDENTICAL to Conversations (no flex, no min-height) */
   .video-card {
     flex: 0 0 100%;
     scroll-snap-align: center;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    min-height: 0;
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateY(20px);
+    transition: opacity 700ms var(--ease), transform 700ms var(--ease);
   }
   .syntheses.reveal .video-card {
     opacity: 1;
     transform: translateY(0);
-    transition: opacity 800ms var(--ease), transform 800ms var(--ease);
-    transition-delay: calc(1400ms + var(--i) * 80ms);
+    transition-delay: calc(900ms + var(--i) * 100ms);
   }
 
+  /* Embed — IDENTICAL to Conversations */
   .embed {
     position: relative;
-    flex: 1;
-    min-height: 0;
     aspect-ratio: 16 / 9;
     background: var(--cream-deep);
     overflow: hidden;
     border: 1px solid var(--rule);
-    max-height: 75vh;
-    align-self: center;
-    width: 100%;
   }
   .embed iframe {
     width: 100%; height: 100%; border: 0; display: block;
@@ -178,29 +168,32 @@ const logos: Record<string, string> = {
     pointer-events: auto;
   }
 
+  /* Meta — IDENTICAL pattern to Conversations meta (logo + title) */
   .meta {
     display: flex;
     align-items: center;
-    gap: 14px;
-    flex-shrink: 0;
-    padding: 0 8px;
+    gap: 12px;
+    margin-top: 16px;
+    padding: 0 4px;
   }
   .logo {
-    width: 28px;
-    height: 28px;
+    width: 24px;
+    height: 24px;
     color: var(--ink);
     flex-shrink: 0;
   }
   .logo :global(svg) { width: 100%; height: 100%; }
   .meta h3 {
-    font-size: 1.4rem;
+    font-size: 1.1rem;
     font-weight: 500;
     letter-spacing: -0.01em;
+    margin: 0;
   }
 
+  /* Nav — IDENTICAL to Conversations */
   .nav {
     position: absolute;
-    top: 50%;
+    top: calc(50% - 40px);
     transform: translateY(-50%);
     width: 44px;
     height: 44px;
@@ -214,10 +207,14 @@ const logos: Record<string, string> = {
   .nav:hover { border-color: var(--accent); background: var(--accent); color: var(--cream); }
   .nav.prev { left: -56px; }
   .nav.next { right: -56px; }
-  @media (max-width: 1100px) {
-    .stage { padding: 0 32px; }
+  @media (max-width: 980px) {
     .nav.prev { left: 4px; }
     .nav.next { right: 4px; }
+  }
+
+  /* Title responsive — keep it big */
+  @media (max-width: 720px) {
+    .title-text { font-size: 4.5rem; }
   }
 </style>
 
@@ -230,9 +227,9 @@ const logos: Record<string, string> = {
         entries.forEach((e) => {
           if (e.isIntersecting && !triggered) {
             triggered = true;
-            // Phase 1: title starts drawing immediately
+            // Phase 1: strike line sweeps + title starts fading
             syntheses.classList.add("strike");
-            // Phase 2: After strike completes, fade in title + drop cards
+            // Phase 2: after strike completes, fade in cards
             setTimeout(() => {
               syntheses.classList.add("reveal");
             }, 700);
@@ -245,3 +242,5 @@ const logos: Record<string, string> = {
     io.observe(syntheses);
   }
 </script>
+</content>
+</invoke>
