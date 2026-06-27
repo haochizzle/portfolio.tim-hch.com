@@ -1,94 +1,44 @@
 ---
-// JS-driven snap — listens for wheel/touch and explicitly scrolls to next/prev section.
-// Doesn't rely on CSS scroll-snap-type behavior (which varies by browser/Vercel env).
+// Smooth IntersectionObserver-driven snap.
+// When a section's center crosses 50% of viewport, snap to it.
+// No wheel handler — uses real scroll, just snaps when you cross the line.
 ---
 <script>
   (function() {
-    // Debug marker — visible only if data-debug=1 on <html>. Off by default.
-    if (document.documentElement.dataset.debug === "1") {
-      const tag = document.createElement("div");
-      tag.textContent = "SNAP OK · sections=" + document.querySelectorAll("section[id]").length;
-      tag.style.cssText = "position:fixed;bottom:8px;left:8px;background:#000;color:#fff;padding:4px 8px;font:11px monospace;z-index:9999;border-radius:3px;";
-      document.body.appendChild(tag);
-    }
-
     const sections = Array.from(document.querySelectorAll("section[id]")) as HTMLElement[];
     if (sections.length === 0) return;
 
-    let locked = false;
-    const LOCK_MS = 900;
+    let snapping = false;
+    const SNAP_LOCK_MS = 1000;
 
-    const currentIndex = () => {
-      const y = window.scrollY + window.innerHeight / 2;
-      let best = 0;
-      let bestDist = Infinity;
-      sections.forEach((s, i) => {
-        const center = s.offsetTop + s.offsetHeight / 2;
-        const d = Math.abs(center - y);
-        if (d < bestDist) { bestDist = d; best = i; }
-      });
-      return best;
+    const snapTo = (target: HTMLElement) => {
+      if (snapping) return;
+      snapping = true;
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
+      setTimeout(() => { snapping = false; }, SNAP_LOCK_MS);
     };
 
-    const scrollToIndex = (i: number) => {
-      const target = sections[Math.max(0, Math.min(sections.length - 1, i))];
-      if (!target) return;
-      locked = true;
-      // Instant scroll — no smooth animation, no chance to land mid-section
-      window.scrollTo({ top: target.offsetTop, behavior: "auto" });
-      setTimeout(() => { locked = false; }, LOCK_MS);
-    };
+    // Observe each section. When its top crosses the upper threshold (40% of viewport),
+    // snap to it. Threshold: 0.6 means section is 60% visible before we trigger.
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (snapping) return;
+        // Pick the entry whose top is closest to the snap line (top of viewport)
+        let best: { target: HTMLElement; top: number } | null = null;
+        for (const e of entries) {
+          if (!e.isIntersecting) continue;
+          const rect = e.boundingClientRect;
+          if (best === null || Math.abs(rect.top) < Math.abs(best.top)) {
+            best = { target: e.target as HTMLElement, top: rect.top };
+          }
+        }
+        if (best && Math.abs(best.top) < 200) {
+          snapTo(best.target);
+        }
+      },
+      { threshold: [0.6, 0.8] }
+    );
 
-    // Wheel handler — accumulate delta, then snap to next/prev section
-    let wheelAcc = 0;
-    const WHEEL_THRESHOLD = 80;
-    window.addEventListener("wheel", (e) => {
-      if (locked) return;
-      // Allow scrolling inside carousels (horizontal)
-      const t = e.target as HTMLElement | null;
-      if (t?.closest(".carousel .track")) return;
-      // Don't snap if user is interacting with a link or button (click handler should fire)
-      if (t?.closest("a, button")) return;
-      wheelAcc += e.deltaY;
-      if (Math.abs(wheelAcc) >= WHEEL_THRESHOLD) {
-        const dir = wheelAcc > 0 ? 1 : -1;
-        const idx = currentIndex();
-        scrollToIndex(idx + dir);
-        wheelAcc = 0;
-      }
-    }, { passive: true });
-
-    // Touch handler — track vertical swipe distance
-    let touchStartY: number | null = null;
-    window.addEventListener("touchstart", (e) => {
-      touchStartY = e.touches[0]?.clientY ?? null;
-    }, { passive: true });
-    window.addEventListener("touchend", (e) => {
-      if (touchStartY == null || locked) return;
-      const endY = e.changedTouches[0]?.clientY ?? touchStartY;
-      const dy = touchStartY - endY;
-      if (Math.abs(dy) > 50) {
-        const dir = dy > 0 ? 1 : -1;
-        const idx = currentIndex();
-        scrollToIndex(idx + dir);
-      }
-      touchStartY = null;
-    }, { passive: true });
-
-    // Keyboard
-    window.addEventListener("keydown", (e) => {
-      if (locked) return;
-      if (e.key === "ArrowDown" || e.key === "PageDown" || e.key === " ") {
-        e.preventDefault();
-        scrollToIndex(currentIndex() + 1);
-      } else if (e.key === "ArrowUp" || e.key === "PageUp") {
-        e.preventDefault();
-        scrollToIndex(currentIndex() - 1);
-      } else if (e.key === "Home") {
-        scrollToIndex(0);
-      } else if (e.key === "End") {
-        scrollToIndex(sections.length - 1);
-      }
-    });
+    sections.forEach((s) => io.observe(s));
   })();
 </script>

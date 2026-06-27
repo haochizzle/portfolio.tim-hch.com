@@ -11,17 +11,11 @@ const logos: Record<string, string> = {
 ---
 
 <section class="syntheses" id="syntheses">
+  <div class="strike-line" aria-hidden="true"></div>
+
   <div class="stage">
-    <h2 class="arc-title cursive" aria-label="Syntheses" data-title>
-      <span class="fallback cursive">Syntheses</span>
-      <svg class="cursive-svg" viewBox="0 0 600 140" aria-hidden="true">
-        <defs>
-          <path id="synth-path" d="M 20 100 Q 50 30, 90 80 Q 130 130, 180 70 Q 230 20, 290 80 Q 350 130, 400 70 Q 450 30, 510 80 Q 560 110, 580 80" fill="none" />
-        </defs>
-        <text class="cursive-stroke">
-          <textPath href="#synth-path" startOffset="0">Syntheses</textPath>
-        </text>
-      </svg>
+    <h2 class="arc-title cursive" aria-label="Syntheses">
+      <span class="title-text">Syntheses</span>
     </h2>
 
     <div class="carousel" data-carousel>
@@ -29,10 +23,6 @@ const logos: Record<string, string> = {
       <div class="track" data-track>
         {syntheses.map((v, i) => (
           <article class="card video-card" style={`--i:${i}`}>
-            <div class="card-meta">
-              <div class="logo" aria-hidden="true" set:html={logos[v.id] ?? ""}></div>
-              <h3 class="serif">{v.title}</h3>
-            </div>
             <div class="embed">
               <iframe
                 src={`https://www.youtube-nocookie.com/embed/${v.youtubeId}`}
@@ -42,6 +32,12 @@ const logos: Record<string, string> = {
                 allowfullscreen
                 data-embed-iframe
               ></iframe>
+            </div>
+            <div class="meta">
+              <div class="logo" aria-hidden="true" set:html={logos[v.id] ?? ""}></div>
+              <div class="meta-text">
+                <h3 class="serif">{v.title}</h3>
+              </div>
             </div>
           </article>
         ))}
@@ -53,59 +49,78 @@ const logos: Record<string, string> = {
 </section>
 
 <style>
+  /* === STRUCTURE MIRRORS Conversations EXACTLY === */
   .syntheses {
     position: relative;
     height: 100vh;
     height: 100svh;
     background: var(--cream);
-    padding: 80px 48px 80px;
     overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
   }
 
+  /* Strike line — IDENTICAL to Conversations */
+  .strike-line {
+    position: absolute;
+    left: 0; right: 0;
+    top: 50%;
+    height: 1px;
+    background: #1f4ed8;
+    transform: scaleX(0);
+    transform-origin: left center;
+    z-index: 2;
+  }
+  .syntheses.strike .strike-line {
+    animation: strike 700ms var(--ease) forwards;
+  }
+  @keyframes strike {
+    to { transform: scaleX(1); }
+  }
+
   .stage {
     width: 100%;
-    max-width: 1200px;
+    max-width: 1400px;
+    padding: 0 64px;
     display: flex;
     flex-direction: column;
-    align-items: center;
     gap: 32px;
     height: 100%;
+    align-items: stretch;
+    justify-content: center;
   }
 
+  /* === CURSIVE TITLE — big, fade-up, identical timing pattern to Conversations === */
   .arc-title {
     width: 100%;
-    max-width: 480px;
     text-align: center;
-    position: relative;
     margin: 0;
-    height: 100px;
     flex-shrink: 0;
+    position: relative;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
-  .arc-title .fallback { display: none; }
-  .arc-title .cursive-svg { width: 100%; height: 100%; overflow: visible; display: block; }
-
-  .cursive-stroke text {
+  .arc-title .title-text {
     font-family: var(--cursive);
-    font-size: 120px;
+    font-size: 110px;
     font-weight: 700;
-    fill: transparent;
-    stroke: var(--ink);
-    stroke-width: 1;
-    stroke-dasharray: 1100;
-    stroke-dashoffset: 1100;
+    color: var(--ink);
+    line-height: 1;
+    opacity: 0;
+    transform: translateY(30px);
   }
-  .syntheses.in .cursive-stroke text {
-    animation:
-      draw 1800ms var(--ease) forwards,
-      fill-in 700ms var(--ease) 1700ms forwards;
+  /* Phase 1 (strike): title fades in */
+  .syntheses.strike .title-text {
+    animation: title-in 1200ms var(--ease) forwards;
   }
-  @keyframes draw { to { stroke-dashoffset: 0; } }
-  @keyframes fill-in { to { fill: var(--ink); stroke-width: 0.3; } }
+  @keyframes title-in {
+    to { opacity: 1; transform: translateY(0); }
+  }
 
-  /* Theatre-mode carousel — one video visible at a time, like Conversations */
+  /* === THEATRE CAROUSEL — IDENTICAL TO CONVERSATIONS === */
   .carousel {
     position: relative;
     width: 100%;
@@ -130,35 +145,16 @@ const logos: Record<string, string> = {
     scroll-snap-align: center;
     display: flex;
     flex-direction: column;
-    gap: 18px;
+    gap: 16px;
     min-height: 0;
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(30px);
   }
-  .syntheses.in .video-card {
+  .syntheses.reveal .video-card {
     opacity: 1;
     transform: translateY(0);
-    transition: opacity 700ms var(--ease), transform 700ms var(--ease);
-    transition-delay: calc(2400ms + var(--i) * 110ms);
-  }
-
-  .card-meta {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    flex-shrink: 0;
-  }
-  .logo {
-    width: 28px;
-    height: 28px;
-    color: var(--ink);
-    flex-shrink: 0;
-  }
-  .logo :global(svg) { width: 100%; height: 100%; }
-  .card-meta h3 {
-    font-size: 1.4rem;
-    font-weight: 500;
-    letter-spacing: -0.01em;
+    transition: opacity 800ms var(--ease), transform 800ms var(--ease);
+    transition-delay: calc(1400ms + var(--i) * 80ms);
   }
 
   .embed {
@@ -169,9 +165,12 @@ const logos: Record<string, string> = {
     background: var(--cream-deep);
     overflow: hidden;
     border: 1px solid var(--rule);
+    max-height: 75vh;
+    align-self: center;
+    width: 100%;
   }
   .embed iframe {
-    width: 100%; height: 100%; border: 0;
+    width: 100%; height: 100%; border: 0; display: block;
     pointer-events: none;
   }
   .video-card:hover .embed iframe,
@@ -179,9 +178,29 @@ const logos: Record<string, string> = {
     pointer-events: auto;
   }
 
+  .meta {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-shrink: 0;
+    padding: 0 8px;
+  }
+  .logo {
+    width: 28px;
+    height: 28px;
+    color: var(--ink);
+    flex-shrink: 0;
+  }
+  .logo :global(svg) { width: 100%; height: 100%; }
+  .meta h3 {
+    font-size: 1.4rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+
   .nav {
     position: absolute;
-    top: calc(50% + 30px);
+    top: 50%;
     transform: translateY(-50%);
     width: 44px;
     height: 44px;
@@ -195,7 +214,8 @@ const logos: Record<string, string> = {
   .nav:hover { border-color: var(--accent); background: var(--accent); color: var(--cream); }
   .nav.prev { left: -56px; }
   .nav.next { right: -56px; }
-  @media (max-width: 980px) {
+  @media (max-width: 1100px) {
+    .stage { padding: 0 32px; }
     .nav.prev { left: 4px; }
     .nav.next { right: 4px; }
   }
@@ -204,11 +224,18 @@ const logos: Record<string, string> = {
 <script>
   const syntheses = document.getElementById("syntheses");
   if (syntheses) {
+    let triggered = false;
     const io = new IntersectionObserver(
       (entries) => {
         entries.forEach((e) => {
-          if (e.isIntersecting) {
-            syntheses.classList.add("in");
+          if (e.isIntersecting && !triggered) {
+            triggered = true;
+            // Phase 1: title starts drawing immediately
+            syntheses.classList.add("strike");
+            // Phase 2: After strike completes, fade in title + drop cards
+            setTimeout(() => {
+              syntheses.classList.add("reveal");
+            }, 700);
             io.disconnect();
           }
         });
@@ -218,5 +245,3 @@ const logos: Record<string, string> = {
     io.observe(syntheses);
   }
 </script>
-</content>
-</invoke>
